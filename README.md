@@ -20,8 +20,8 @@ The rule set is layered on top of two established baselines:
 ### 1. Install Vale
 
 Download a Vale release from [vale-cli/vale](https://github.com/vale-cli/vale)
-(the workflows in this repo pin a specific version — see
-[.github/workflows/self-check.yml](.github/workflows/self-check.yml) — but any
+(the workflows in this repo install the latest release — see
+[.github/workflows/self-check.yml](.github/workflows/self-check.yml) — and any
 recent Vale release works locally). See the
 [Vale installation docs](https://vale.sh/docs/vale-cli/installation/) for
 platform-specific instructions (Homebrew, Scoop, binary download, etc.).
