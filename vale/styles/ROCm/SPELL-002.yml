@@ -1,0 +1,36 @@
+# SPELL-002 — Common American vs. British variants (warning)
+# Reuses wordlists/preferred-terms.yml (american-english). This rule holds the
+# remaining variants not already owned by CORE-001 (colour/behaviour/organise/
+# licence) or SPELL-001 (analyse/catalogue/centre/grey/judgement/modelling), so
+# no British spelling is double-flagged.
+# "dialogue" is intentionally omitted: the rule notes it is acceptable for
+# conversation and only wrong for UI — context-dependent, so the LLM tier judges.
+extends: substitution
+message: "SPELL-002: Prefer American spelling '%s' instead of '%s'."
+level: warning
+ignorecase: true
+nonword: false
+swap:
+  analogue: analog
+  artefact: artifact
+  cancelled: canceled
+  cancelling: canceling
+  customise: customize
+  defence: defense
+  favour: favor
+  fibre: fiber
+  fulfil: fulfill
+  honour: honor
+  initialise: initialize
+  labelled: labeled
+  optimise: optimize
+  organisation: organization
+  parallelise: parallelize
+  programme: program
+  realise: realize
+  recognise: recognize
+  serialise: serialize
+  signalling: signaling
+  synchronise: synchronize
+  utilise: utilize
+  virtualise: virtualize

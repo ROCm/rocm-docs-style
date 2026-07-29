@@ -1,0 +1,16 @@
+# CORE-010 — Avoid generic headings (warning)
+# Banned generic heading words, scoped to headings only.
+extends: existence
+message: "CORE-010: Avoid the generic heading '%s' — use a descriptive, content-specific heading."
+level: warning
+scope: heading
+ignorecase: true
+nonword: false
+tokens:
+  - Introduction
+  - Conclusion
+  - References
+  - Acknowledgements
+  - Acknowledgments
+  - Appendices
+  - Appendix

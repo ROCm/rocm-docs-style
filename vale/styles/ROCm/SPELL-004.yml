@@ -1,0 +1,42 @@
+# SPELL-004 — Compound word forms (warning)
+# Reuses wordlists/preferred-terms.yml (compounds). The wordlist's
+# preferred/avoid pairs are expanded here into substitutions.
+# Note: "command line" (noun) vs "command-line" (adjective) and
+# "open source/open-source" are context/POS-dependent and are handled in
+# SPELL-006 / the LLM tier, not here, to avoid wrong auto-fixes.
+extends: substitution
+message: "SPELL-004: Use the preferred compound form '%s' instead of '%s'."
+level: warning
+ignorecase: true
+nonword: false
+swap:
+  'back-end': backend
+  'back end': backend
+  'change log': changelog
+  'change-log': changelog
+  'check-point': checkpoint
+  'check point': checkpoint
+  'code-name': codename
+  'code name': codename
+  'data-set': dataset
+  'data set': dataset
+  'data-type': datatype
+  'data type': datatype
+  'file-system': filesystem
+  'file system': filesystem
+  'host-name': hostname
+  'host name': hostname
+  'name-space': namespace
+  'name space': namespace
+  'run-time': runtime
+  'run time': runtime
+  'tool-chain': toolchain
+  'tool chain': toolchain
+  'walk-through': walkthrough
+  'walk through': walkthrough
+  'white-paper': whitepaper
+  'white paper': whitepaper
+  'white-space': whitespace
+  'white space': whitespace
+  'work-group': workgroup
+  'work group': workgroup

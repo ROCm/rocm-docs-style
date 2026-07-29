@@ -1,0 +1,13 @@
+# CORE-012 — Meaningful link anchor text (error)
+#
+# Vale 3 removed `scope: link`, so this matches generic anchor text inside the
+# Markdown link syntax directly: [here](...), [click here](...), [this](...),
+# etc. The `raw` regex captures the bracketed anchor text only when it is
+# immediately followed by a link target "(", so ordinary prose words like "here"
+# are not flagged.
+extends: existence
+message: "CORE-012: Use descriptive link anchor text instead of a generic anchor."
+level: error
+scope: raw
+raw:
+  - '\[(?i)(here|click here|this document|this page|link|this|read more|more)\]\('

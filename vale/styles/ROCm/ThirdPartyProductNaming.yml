@@ -1,0 +1,17 @@
+# Third-party product naming — "X for ROCm" combined product naming (error)
+# Flags "ROCm <ThirdParty>" / "AMD <ThirdParty>" prefixing and rewrites to
+# "<ThirdParty> for ROCm". Third-party names reuse wordlists/preferred-terms.yml
+# (third-party).
+extends: substitution
+message: "Use the 'X for ROCm' form '%s' instead of '%s'."
+level: error
+ignorecase: false
+nonword: true
+swap:
+  'ROCm PyTorch': PyTorch for ROCm
+  'ROCm TensorFlow': TensorFlow for ROCm
+  'ROCm JAX': JAX for ROCm
+  'ROCm vLLM': vLLM for ROCm
+  'AMD PyTorch': PyTorch for ROCm
+  'AMD TensorFlow': TensorFlow for ROCm
+  'AMD JAX': JAX for ROCm

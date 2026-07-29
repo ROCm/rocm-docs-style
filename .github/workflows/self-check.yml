@@ -1,0 +1,54 @@
+# Self-check — lint the style-guide repo's OWN additions.
+#
+# Runs on PRs to this repo (rocm-docs-style). When someone adds or edits rules,
+# wordlists, or docs here, this validates that:
+#   1. The Vale config still loads (no broken StylesPath / missing style).
+#   2. Any Markdown the PR changed passes the repo's own Vale rules.
+#
+# GitHub-hosted, no secrets, no gateway — this is a pure Vale (static) repo.
+
+name: self-check
+
+on:
+  pull_request:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the PR
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0          # needed to diff against the base branch
+
+      - name: Install Vale
+        run: |
+          VALE_VERSION="3.9.1"   # pin; bump deliberately
+          curl -sfL "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin vale
+          vale --version
+
+      - name: Sync Vale packages
+        run: (cd vale && vale sync)
+
+      - name: Validate the Vale config loads
+        run: vale --config=vale/.vale.ini ls-config >/dev/null
+
+      - name: Lint changed Markdown (the PR's own additions)
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          # Markdown files this PR added/changed, EXCLUDING the rules/ docs
+          # (those are rule definitions, not prose to lint — adjust if you want
+          #  them linted too).
+          FILES=$(git diff --name-only --diff-filter=ACM "$BASE" -- '*.md' ':(exclude)rules/**' || true)
+          if [ -z "$FILES" ]; then
+            echo "No changed Markdown to lint."
+            exit 0
+          fi
+          echo "Linting:"; echo "$FILES"
+          vale --config=vale/.vale.ini $FILES

@@ -1,0 +1,10 @@
+# LAND-004 — No structural boilerplate preamble (error)
+# Flags the banned structural preamble line on landing pages.
+extends: existence
+message: "LAND-004: Remove the structural preamble — the topic table is self-explanatory."
+level: error
+ignorecase: true
+nonword: true
+tokens:
+  - 'The documentation is structured as follows'
+  - 'documentation is organized as follows'

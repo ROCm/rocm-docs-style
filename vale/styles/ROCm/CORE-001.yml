@@ -1,0 +1,17 @@
+# CORE-001 — American English spelling (error)
+# Reuses the British->American variants from wordlists/preferred-terms.yml
+# (american-english). To avoid double-flagging the same word as both error and
+# warning, the American-English word set is partitioned:
+#   CORE-001 (error)  : the words in this rule's own examples
+#   SPELL-001 (error) : that rule's example words
+#   SPELL-002 (warning): the remaining wordlist variants
+extends: substitution
+message: "CORE-001: Use American English spelling '%s' instead of '%s'."
+level: error
+ignorecase: true
+nonword: false
+swap:
+  colour: color
+  behaviour: behavior
+  organise: organize
+  licence: license

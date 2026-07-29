@@ -1,0 +1,12 @@
+# INST-003 — "Series" capitalization (error)
+# Flags lowercase "series" when it follows a product-line token (e.g.
+# "MI300 series", "MI350 SERIES") and should be "Series". The leading model
+# token (MI<digits>, RX, etc.) keeps this from flagging ordinary prose "series".
+extends: existence
+message: "INST-003: Use 'Series' (initial capital) for a GPU product-line group."
+level: error
+ignorecase: false
+nonword: true
+tokens:
+  - '\bMI\d+\w*\s+(?:series|SERIES)\b'
+  - '\bRX\s+\w+\s+(?:series|SERIES)\b'

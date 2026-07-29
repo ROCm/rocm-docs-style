@@ -1,0 +1,32 @@
+# SPELL-009 — Ambiguous / non-translatable words (warning)
+#
+# Most entries in the source word list are context-dependent (e.g. "modify"
+# can be fine, and "first"/"only" are often ambiguous only in certain
+# phrasings). This rule converts only the high-confidence, always-discouraged
+# words as flags. Words that need to be judged in context ("modify", "via",
+# "first", "only") are intentionally left out of this mechanical check.
+# Several entries here overlap Google.Will/Google.Acronyms etc.; the ROCm rule is
+# emitted first per BasedOnStyles ordering.
+extends: existence
+message: "'%s' is discouraged — see the Google word list for a clearer alternative."
+level: warning
+ignorecase: true
+nonword: false
+tokens:
+  - comprise
+  - comprises
+  - comprised
+  - desire
+  - 'e\.g\.'
+  - 'i\.e\.'
+  - leverage
+  - leverages
+  - leveraging
+  - please
+  - simply
+  - simple
+  - easily
+  - easy
+  - obviously
+  - 'in order to'
+  - utilize

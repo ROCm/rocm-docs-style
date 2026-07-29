@@ -1,0 +1,163 @@
+# AMD trademarks commonly referenced in ROCm documentation
+# Source: AMD Trademarks page, https://www.amd.com/en/legal/trademarks.html
+#
+# symbol: the mark required by the trademark owner (™ or ®)
+# attribution: the required attribution statement
+#
+# NOTE: This is a partial list of marks most relevant to ROCm and AMD
+# technical documentation, built directly from AMD's public trademark
+# page. For the complete list of AMD marks, see the source page above.
+
+- mark: "AMD"
+  symbol: ""
+  attribution: ""
+  notes: "No trademark symbol or attribution required. ROCm documentation always includes a copyright notice in the footer, which covers 'AMD'."
+
+- mark: "AMD EPYC"
+  symbol: "™"
+  attribution: "AMD EPYC is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Instinct"
+  symbol: "™"
+  attribution: "AMD Instinct is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Radeon"
+  symbol: "™"
+  attribution: "Radeon is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Radeon Instinct"
+  symbol: "™"
+  attribution: "Radeon Instinct is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Ryzen"
+  symbol: "™"
+  attribution: "AMD Ryzen is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Threadripper"
+  symbol: "™"
+  attribution: "AMD Threadripper is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Ryzen Threadripper"
+  symbol: "™"
+  attribution: "AMD Ryzen Threadripper is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD CDNA"
+  symbol: "™"
+  attribution: "AMD CDNA is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD RDNA"
+  symbol: "™"
+  attribution: "AMD RDNA is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD ROCm"
+  symbol: "™"
+  attribution: "AMD ROCm is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD XDNA"
+  symbol: "™"
+  attribution: "AMD XDNA is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Infinity Fabric"
+  symbol: "™"
+  attribution: "Infinity Fabric is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Infinity Cache"
+  symbol: "™"
+  attribution: "AMD Infinity Cache is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Compute DNA"
+  symbol: "™"
+  attribution: "AMD Compute DNA is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Unified AI"
+  symbol: "™"
+  attribution: "AMD Unified AI is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Radiance Display"
+  symbol: "™"
+  attribution: "AMD Radiance Display is a trademark of Advanced Micro Devices, Inc."
+  notes: "'Engine' is an identifying noun following the mark, not part of the trademark itself (compare 'AMD Instinct GPU')."
+
+- mark: "AMD Software: Adrenalin Edition"
+  symbol: "™"
+  attribution: "AMD Software: Adrenalin Edition is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD FreeSync"
+  symbol: "™"
+  attribution: "AMD FreeSync is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Smart Access Memory"
+  symbol: "™"
+  attribution: "AMD Smart Access Memory is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Virtualization"
+  symbol: "™"
+  attribution: "AMD Virtualization is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD-V"
+  symbol: "™"
+  attribution: "AMD-V is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD CrossFire"
+  symbol: "™"
+  attribution: "AMD CrossFire is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Pensando"
+  symbol: "™"
+  attribution: "AMD Pensando is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Creator Cloud"
+  symbol: "™"
+  attribution: "AMD Creator Cloud is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD Solarflare"
+  symbol: "™"
+  attribution: "AMD Solarflare is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD StoreMI"
+  symbol: "™"
+  attribution: "AMD StoreMI is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "AMD FidelityFX"
+  symbol: "™"
+  attribution: "AMD FidelityFX is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "ATI"
+  symbol: "™"
+  attribution: "ATI is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Versal"
+  symbol: "™"
+  attribution: "Versal is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Vitis"
+  symbol: "™"
+  attribution: "Vitis is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Vivado"
+  symbol: "™"
+  attribution: "Vivado is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Zynq"
+  symbol: "™"
+  attribution: "Zynq is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Kria"
+  symbol: "™"
+  attribution: "Kria is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Artix"
+  symbol: "™"
+  attribution: "Artix is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Spartan"
+  symbol: "™"
+  attribution: "Spartan is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Kintex"
+  symbol: "™"
+  attribution: "Kintex is a trademark of Advanced Micro Devices, Inc."
+
+- mark: "Virtex"
+  symbol: "™"
+  attribution: "Virtex is a trademark of Advanced Micro Devices, Inc."

@@ -1,0 +1,19 @@
+# Trademark modification — No modification of AMD trademarks (error)
+# Reuses wordlists/amd-trademarks.yml (marks). Flags possessive ("AMD's",
+# "EPYC's"), pluralization ("EPYCs"), and hyphenated combinations
+# ("AMD-EPYC", "AMD-optimized", "AMD-based") of AMD marks.
+# The AMD note in the wordlist: "Do not use possessively (AMD's). Do not
+# hyphenate or combine."
+extends: existence
+message: "Do not modify AMD trademarks (no possessive, plural, or hyphenated combination): '%s'."
+level: error
+nonword: true
+ignorecase: false
+tokens:
+  # Possessive forms of AMD and AMD marks.
+  - "AMD's"
+  - "(?:EPYC|Ryzen|Instinct|Radeon|Threadripper|ROCm)'s"
+  # Pluralized marks (mark + lowercase s).
+  - '\b(?:EPYCs|Ryzens|Instincts|Radeons|Threadrippers)\b'
+  # Hyphenated combinations beginning with AMD.
+  - '\bAMD-[A-Za-z]+'

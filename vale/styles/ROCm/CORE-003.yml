@@ -1,0 +1,17 @@
+# CORE-003 — Use "and"/"or" instead of a slash (error)
+#
+# Strategy: flag two lowercase alphabetic words joined by a slash
+# (e.g. "install/configure", "input/output"). Requiring BOTH sides to be
+# lowercase (ignorecase: false) lets the documented exceptions pass naturally,
+# because they contain uppercase: "I/O", "TCP/IP". The remaining lowercase
+# exception "client/server" is the only one this can over-fire on.
+# Code spans/blocks are skipped by Vale's Markdown/rST
+# scope, so file paths inside code are not flagged; bare paths in prose
+# (e.g. usr/bin) are a known limitation.
+extends: existence
+message: "CORE-003: Use 'and' or 'or' instead of a slash to join alternatives (exceptions: I/O, TCP/IP)."
+level: error
+nonword: true
+ignorecase: false
+tokens:
+  - '\b[a-z]{3,}/[a-z]{3,}\b'

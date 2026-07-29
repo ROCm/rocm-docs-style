@@ -1,0 +1,75 @@
+# Banned and restricted terms for AMD technical documentation
+# Source: AMD Technical Materials Keyword List
+
+# --- Absolute/superlative claims (flag for review) ---
+
+- term: "best"
+  severity: error
+  action: flag
+  reason: "Superlative claim requires legal-approved substantiation."
+  replacement: "Use a general, non-specific characterization."
+
+- term: "guarantee"
+  severity: error
+  action: flag
+  reason: "Absolute claim requires legal-approved substantiation."
+
+- term: "fastest"
+  severity: error
+  action: flag
+  reason: "Superlative claim requires legal-approved substantiation."
+  replacement: "Use 'high-performance' or similar non-absolute phrasing."
+
+- term: "never"
+  severity: warning
+  action: flag
+  reason: "Absolute statement. Verify this is factually correct and not a marketing claim."
+
+- term: "always"
+  severity: warning
+  action: flag
+  reason: "Absolute statement. Verify this is factually correct and not a marketing claim."
+
+- term: "first"
+  severity: warning
+  action: flag
+  context: "Flag only when used as a superlative claim (e.g., 'industry first'). Acceptable in procedural contexts (e.g., 'first, install the package')."
+
+- term: "only"
+  severity: warning
+  action: flag
+  context: "Flag only when used as an exclusivity claim (e.g., 'the only solution'). Acceptable in technical contexts (e.g., 'only applies to Linux')."
+
+# --- Timeless/marketing claims (flag for review) ---
+
+- term: "state-of-the-art"
+  severity: warning
+  action: flag
+  reason: "Timeless marketing claim. Will become outdated."
+  replacement: "Describe the specific capability instead."
+  source: "ROCm custom"
+
+- term: "best-in-class"
+  severity: warning
+  action: flag
+  reason: "Superlative marketing claim requiring substantiation."
+  replacement: "Describe the specific advantage instead."
+  source: "ROCm custom"
+
+- term: "new"
+  severity: warning
+  action: flag
+  context: "Flag when used to describe product features (becomes outdated). Acceptable in changelogs or release notes."
+  source: "ROCm custom"
+
+- term: "cutting-edge"
+  severity: warning
+  action: flag
+  reason: "Marketing language. Describe the specific technical advantage instead."
+  source: "ROCm custom"
+
+- term: "world-class"
+  severity: warning
+  action: flag
+  reason: "Marketing language without substantiation."
+  source: "ROCm custom"

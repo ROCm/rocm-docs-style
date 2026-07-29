@@ -1,0 +1,269 @@
+# Preferred terminology for ROCm documentation
+# Derived from Vale vocabularies and ROCm conventions.
+#
+# Categories:
+#   rocm-components: ROCm library and tool names (exact casing required)
+#   technical: Technical terms with specific casing or form
+#   compounds: Compound words with preferred forms
+#   inclusive: Inclusive language replacements
+#   spelling: American English preferred spellings
+
+# --- ROCm libraries and tools (exact casing) ---
+
+rocm-components:
+  - AMD SMI
+  - AMDMIGraphX
+  - Composable Kernel
+  - HIP
+  - HIPIFY
+  - hipBLAS
+  - hipBLASLt
+  - hipCUB
+  - hipFFT
+  - hipFile
+  - hipFORT
+  - hipRAND
+  - hipSOLVER
+  - hipSPARSE
+  - hipSPARSELt
+  - hipTensor
+  - MIGraphX
+  - MIOpen
+  - MIVisionX
+  - RCCL
+  - ROCclr
+  - ROCdbgapi
+  - ROCgdb
+  - ROCProfiler
+  - ROCprofiler-SDK
+  - ROCR
+  - ROCr Debug Agent
+  - ROCTracer
+  - ROCm
+  - ROCm Compute Profiler
+  - ROCm Data Center Tool
+  - ROCm Systems Profiler
+  - ROCm Validation Suite
+  - ROCmCC
+  - rocAL
+  - rocALUTION
+  - rocBLAS
+  - rocDecode
+  - rocFFT
+  - rocHPCG
+  - rocJPEG
+  - rocLIB
+  - rocMLIR
+  - rocPRIM
+  - rocprofiler-compute
+  - rocprofiler-systems
+  - rocPyDecode
+  - rocRAND
+  - rocSHMEM
+  - rocSOLVER
+  - rocSPARSE
+  - rocThrust
+  - rocWMMA
+  - rocminfo
+  - Tensile
+  - TransferBench
+  - Torch-MIGraphX
+
+# --- AMD product names (exact casing) ---
+
+amd-products:
+  - AMD EPYC
+  - AMD Helios
+  - AMD Instinct
+  - AMD Radeon
+  - AMD Ryzen
+  - CDNA
+  - RDNA
+  - AMD XDNA
+  - Infinity Fabric
+
+# --- Third-party names (exact casing) ---
+
+third-party:
+  - AlmaLinux
+  - BabelStream
+  - CentOS
+  - CMake
+  - conda
+  - ConnectX
+  - CUDA
+  - cuBLAS
+  - cuDNN
+  - cuFFT
+  - cuRAND
+  - cuSOLVER
+  - cuSPARSE
+  - cuSPARSELt
+  - CuPy
+  - Debian
+  - DeepSpeed
+  - DeepSeek
+  - FFmpeg
+  - FlashAttention
+  - GFortran
+  - GitHub
+  - gRPC
+  - InfiniBand
+  - IntelliSense
+  - JAX
+  - Jupyter
+  - Keras
+  - LLVM
+  - NumPy
+  - NVIDIA
+  - NVLink
+  - ONNX
+  - OpenCL
+  - OpenCV
+  - OpenGL
+  - OpenMPI
+  - OpenMP
+  - OpenSSL
+  - pip
+  - PyTorch
+  - RHEL
+  - SGLang
+  - SLURM
+  - TensorBoard
+  - TensorFlow
+  - TensorRT
+  - Valgrind
+  - vLLM
+  - VMware
+  - Vulkan
+
+# --- Technical terms (specific casing or form) ---
+
+technical:
+  - preferred: machine learning
+    avoid: [Machine Learning, Machine learning]
+  - preferred: ML
+    avoid: [ml]
+
+# --- Compound words (preferred form) ---
+
+compounds:
+  - preferred: backend
+    avoid: [back-end, back end]
+  - preferred: bitstream
+    avoid: [bit stream, bit-stream]
+  - preferred: changelog
+    avoid: [change log, change-log]
+  - preferred: checkpoint
+    avoid: [check-point, check point]
+  - preferred: codename
+    avoid: [code-name, code name]
+  - preferred: dataset
+    avoid: [data-set, data set]
+  - preferred: datatype
+    avoid: [data-type, data type]
+  - preferred: filesystem
+    avoid: [file-system, file system]
+  - preferred: hostname
+    avoid: [host-name, host name]
+  - preferred: keyframe
+    avoid: [key frame, key-frame]
+  - preferred: namespace
+    avoid: [name-space, name space]
+  - preferred: nontrivial
+    avoid: [non-trivial, non trivial]
+  - preferred: pretrain
+    avoid: [pre-train, pre train]
+  - preferred: reuse
+    avoid: [re-use, re use]
+  - preferred: runtime
+    avoid: [run-time, run time]
+  - preferred: toolchain
+    avoid: [tool-chain, tool chain]
+  - preferred: walkthrough
+    avoid: [walk-through, walk through]
+  - preferred: whitepaper
+    avoid: [white-paper, white paper]
+  - preferred: whitespace
+    avoid: [white-space, white space]
+  - preferred: workgroup
+    avoid: [work-group, work group]
+
+# --- Inclusive language ---
+
+inclusive:
+  - preferred: allowlist
+    avoid: [whitelist]
+  - preferred: denylist
+    avoid: [blacklist]
+  - preferred: primary
+    avoid: [master]
+    context: "In non-git contexts"
+  - preferred: replica
+    avoid: [slave]
+  - preferred: confidence check
+    avoid: [sanity check]
+
+# --- American English (most common variants in tech docs) ---
+
+american-english:
+  - preferred: analog
+    avoid: [analogue]
+  - preferred: analyze
+    avoid: [analyse]
+  - preferred: artifact
+    avoid: [artefact]
+  - preferred: canceled
+    avoid: [cancelled]
+  - preferred: catalog
+    avoid: [catalogue]
+  - preferred: center
+    avoid: [centre]
+  - preferred: color
+    avoid: [colour]
+  - preferred: customize
+    avoid: [customise]
+  - preferred: defense
+    avoid: [defence]
+  - preferred: favor
+    avoid: [favour]
+  - preferred: fiber
+    avoid: [fibre]
+  - preferred: fulfill
+    avoid: [fulfil]
+  - preferred: gray
+    avoid: [grey]
+  - preferred: honor
+    avoid: [honour]
+  - preferred: initialize
+    avoid: [initialise]
+  - preferred: judgment
+    avoid: [judgement]
+  - preferred: labeled
+    avoid: [labelled]
+  - preferred: license
+    avoid: [licence]
+    context: "As a noun in American English"
+  - preferred: modeling
+    avoid: [modelling]
+  - preferred: optimize
+    avoid: [optimise]
+  - preferred: organization
+    avoid: [organisation]
+  - preferred: parallelize
+    avoid: [parallelise]
+  - preferred: program
+    avoid: [programme]
+    context: "Except in proper nouns"
+  - preferred: realize
+    avoid: [realise]
+  - preferred: recognize
+    avoid: [recognise]
+  - preferred: serialize
+    avoid: [serialise]
+  - preferred: signaling
+    avoid: [signalling]
+  - preferred: synchronize
+    avoid: [synchronise]
+  - preferred: virtualize
+    avoid: [virtualise]

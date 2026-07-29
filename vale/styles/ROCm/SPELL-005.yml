@@ -1,0 +1,28 @@
+# SPELL-005 — Abbreviation and acronym casing (warning)
+#
+# The canonical casings live in the Vale vocabulary accept.txt (generated from
+# wordlists/preferred-terms.yml + the SPELL-005 table). This rule maps the
+# common wrong casings from the rule's table to the correct form with an
+# explicit SPELL-005 message.
+# Case-sensitive (ignorecase: false) so only the wrong casings match.
+# Exception honored: the rule defers to tool casing inside code blocks/paths/CLI
+# (e.g. `cmake`); Vale's Markdown/rST scope already excludes code spans and
+# fenced blocks, so lowercase tool names in code are not flagged.
+extends: substitution
+message: "SPELL-005: Use the established casing '%s' instead of '%s'."
+level: warning
+ignorecase: false
+nonword: true
+swap:
+  '\b(?:Gpu)\b': GPU
+  '\b(?:Cpu)\b': CPU
+  '\b(?:Api)\b': API
+  '\b(?:PCIE)\b': PCIe
+  '\b(?:Opencl|OPENCL)\b': OpenCL
+  '\b(?:Openmp|OPENMP)\b': OpenMP
+  '\b(?:Cuda)\b': CUDA
+  '\b(?:Llvm)\b': LLVM
+  '\b(?:Numpy|NUMPY)\b': NumPy
+  '\b(?:Tensorflow)\b': TensorFlow
+  '\b(?:HIPify)\b': HIPIFY
+  '\b(?:TorchMIGraphX)\b': Torch-MIGraphX

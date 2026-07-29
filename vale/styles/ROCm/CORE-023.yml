@@ -1,0 +1,15 @@
+# CORE-023 — Description-list entry formatting (warning)
+# Flags malformed "**Term:** Description" entries: colon outside the bold
+# markers, a space before the colon, a missing space after the closing
+# markers, or too many spaces after. Enforces the mechanical bold-term/colon
+# placement and spacing only.
+extends: existence
+message: "CORE-023: Malformed description-list entry near '%s' -- use '**Term:** Description' (colon inside the bold, no space before it, exactly one space after)."
+link: 'https://developers.google.com/style/lists'
+nonword: true
+level: warning
+tokens:
+  - '\*\*[^*\n]+\*\*:'
+  - '\*\*[^*\n]+ +:\*\*'
+  - ':\*\*(?=\S)'
+  - ':\*\*(?: {2,})\S'

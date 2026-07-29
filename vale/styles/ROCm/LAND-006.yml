@@ -1,0 +1,11 @@
+# LAND-006 — No "Quick Start" for package installation (error)
+# Flags "Quick Start" / "Quickstart" used as install link/heading text.
+extends: existence
+message: "LAND-006: Do not use 'Quick Start' for package installation — use 'Installing {component} with the package installer'."
+level: error
+ignorecase: true
+nonword: false
+tokens:
+  - 'Quick Start'
+  - 'Quick-Start'
+  - Quickstart

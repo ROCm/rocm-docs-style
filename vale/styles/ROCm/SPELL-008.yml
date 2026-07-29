@@ -1,0 +1,12 @@
+# SPELL-008 — "may" vs. "might" vs. "can" (warning)
+#
+# "may" is context-dependent (possibility -> might, ability/permission -> can),
+# so this flags rather than auto-swaps to a single target: existence check on the
+# word "may". The LLM tier / author picks might vs. can.
+extends: existence
+message: "SPELL-008: Avoid 'may' — use 'might' for possibility or 'can' for ability/permission."
+level: warning
+ignorecase: true
+nonword: false
+tokens:
+  - may

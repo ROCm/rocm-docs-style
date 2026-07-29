@@ -1,0 +1,19 @@
+# CORE-004 — Inclusive language (error)
+# Reuses the inclusive-language replacements from
+# wordlists/preferred-terms.yml (inclusive) plus the gendered/ableist examples
+# in the rule. "master" is intentionally omitted here because it is git-context
+# dependent (see preferred-terms.yml note and SPELL-006); the LLM tier judges it.
+extends: substitution
+message: "CORE-004: Use inclusive language '%s' instead of '%s'."
+level: error
+ignorecase: true
+nonword: false
+swap:
+  manpower: workforce
+  whitelist: allowlist
+  blacklist: denylist
+  'sanity check': confidence check
+  crippled: degraded
+  'he/she': they
+  'his/her': their
+  slave: replica

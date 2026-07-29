@@ -1,0 +1,13 @@
+# INST-002 — Ryzen APU hardware are APUs, not processors (error)
+#
+# PARTIAL CONVERSION. The rule forbids "processor"
+# only when referring to the Ryzen APU variant — but "AMD Ryzen processor" is
+# correct for non-APU Ryzen parts, so the trigger is genuinely context/SKU
+# dependent and cannot be told apart by regex. To stay quiet on the legitimate
+# case, this fires only on the explicit contradiction "Ryzen AI ... processor"
+# (the AI-series parts are the APUs), leaving the broader judgment to the LLM tier.
+extends: existence
+message: "INST-002: Refer to AMD Ryzen APU hardware as an APU, not a processor."
+level: error
+raw:
+  - 'Ryzen AI( [A-Za-z0-9]+)* processors?'

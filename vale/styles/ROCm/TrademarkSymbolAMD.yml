@@ -1,0 +1,12 @@
+# Trademark symbol usage — bare "AMD" takes no symbol (error)
+# Reuses wordlists/amd-trademarks.yml (marks). Unlike other AMD marks, bare
+# "AMD" requires no trademark symbol or attribution: the copyright notice in
+# the ROCm documentation footer already covers it. Flags "AMD" immediately
+# followed by TM, (R), or (SM).
+extends: existence
+message: "\"AMD\" needs no trademark symbol — the documentation footer copyright notice already covers it."
+level: error
+nonword: true
+ignorecase: false
+tokens:
+  - 'AMD\s*[™®℠]'

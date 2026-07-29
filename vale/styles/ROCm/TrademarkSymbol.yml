@@ -1,0 +1,13 @@
+# Trademark symbol usage — No (R) or (SM) on AMD marks (error)
+# Reuses wordlists/amd-trademarks.yml (marks). AMD's own marks (other than bare
+# "AMD" itself, see TrademarkSymbolAMD.yml) must use TM, never (R) or (SM).
+# Flags an AMD mark immediately followed by (R) or (SM).
+# (R)/(SM) on THIRD-PARTY marks is allowed, so only AMD-owned marks are listed.
+extends: existence
+message: "AMD marks use the trademark symbol, never (R) or (SM). Replace ®/℠ with ™."
+level: error
+nonword: true
+ignorecase: false
+tokens:
+  - '(?:AMD )?(?:Ryzen|EPYC|Instinct|Radeon|Threadripper|Athlon|Opteron|Alveo|Versal|Vitis|Vivado|Zynq|FidelityFX|FreeSync|XDNA|Pensando)\s*[®℠]'
+  - 'ROCm\s*[®℠]'

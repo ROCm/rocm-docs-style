@@ -1,0 +1,44 @@
+# SPELL-003 — ROCm product and library name casing (error)
+#
+# The canonical casing list lives in the Vale vocabulary
+# (styles/config/vocabularies/ROCm/accept.txt), generated from
+# wordlists/preferred-terms.yml. Vale's built-in Vale.Terms check already flags
+# any non-canonical casing of those accepted terms. This rule additionally maps
+# the most common wrong spellings from the SPELL-003 example table to their
+# correct form so the fix is explicit and carries the SPELL-003 ID.
+# nonword + case-sensitive matching: only the wrong casings below match; the
+# correct casing (e.g. rocBLAS) is left untouched.
+# Negative lookahead on the ROCm key excludes kebab-case repo/package slugs
+# (e.g. "rocm-examples"), which are literal GitHub identifiers conventionally
+# written all-lowercase and are not a miscasing of the ROCm brand name.
+# Negative lookahead on the rocprofiler key excludes "rocprofiler-compute" and
+# "rocprofiler-systems" — the package names for ROCm Compute Profiler and
+# ROCm Systems Profiler. These are distinct tools from ROCProfiler (the
+# profiling library), so they are not a miscasing that needs correcting.
+# The ASAN and ROCPD keys use letter-boundary lookaround (rather than bare
+# substitution) because both are short substrings of unrelated real words:
+# ASAN is the tail of "KASAN" (Kernel AddressSanitizer), and a bare match
+# would also clip the start of unrelated words. The lookaround keeps the
+# match confined to the whole token.
+extends: substitution
+message: "SPELL-003: Use the exact ROCm name casing '%s' instead of '%s'."
+level: error
+ignorecase: false
+nonword: true
+swap:
+  '(?:ROCM|rocm|Rocm)(?!-[a-z0-9])': ROCm
+  '(?:HipBLAS|HIPBLAS|hipblas)': hipBLAS
+  '(?:RocBLAS|ROCBLAS|rocblas)': rocBLAS
+  '(?:miopen|MIOPEN|Miopen)': MIOpen
+  '(?:RocFFT|ROCFFT|rocfft)': rocFFT
+  '(?:HipSPARSE|hipsparse)': hipSPARSE
+  '(?:RocSOLVER|rocsolver)': rocSOLVER
+  '(?:migraphx|MIGRAPHX)': MIGraphX
+  '(?:rocprofiler|ROCPROFILER)(?!-(?:compute|systems))': ROCProfiler
+  '(?:RocPRIM|rocprim)': rocPRIM
+  '(?:RocRAND|rocrand)': rocRAND
+  '(?:RocThrust|rocthrust)': rocThrust
+  '(?:rocalution|ROCALUTION)': rocALUTION
+  '(?:VLLM|Vllm)': vLLM
+  '(?<![A-Za-z])(?:ASAN)(?![A-Za-z])': ASan
+  '(?<![A-Za-z])(?:ROCPD|ROCpd)(?![A-Za-z])': rocpd

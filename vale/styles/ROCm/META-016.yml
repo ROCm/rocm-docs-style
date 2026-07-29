@@ -1,0 +1,14 @@
+# META-016 — Descriptive link anchor text (SEO) (warning)
+#
+# Per the precedence cross-reference index, link anchor text is primarily owned
+# by CORE-012 (error) and "reported once". CORE-012 already flags generic anchors
+# at error level on the same span. To avoid duplicate findings, META-016 is
+# scoped narrowly to the SEO-only phrasing "click this"/"click this link"/"go
+# here" that CORE-012's token list does not cover, and runs at warning level.
+# Vale 3 removed `scope: link`, so this matches the Markdown link syntax via raw.
+extends: existence
+message: "META-016: Use keyword-rich, descriptive anchor text instead of a generic anchor."
+level: warning
+scope: raw
+raw:
+  - '\[(?i)(click this link|click this|go here)\]\('

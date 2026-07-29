@@ -1,0 +1,117 @@
+# CORE-018 — Acronym spell-out (supersedes Google.Acronyms)
+#
+# Identical detection logic to Google.Acronyms (same first/second regex,
+# same message/level) but with an extended exceptions list covering
+# AMD/ROCm terms that are proper names in this docs set and never get
+# spelled out: AMD, SMI, LLVM, APU, SIMD, VRAM, CUDA, HIP, CDNA, RDNA, GCN.
+#
+# AMD, CUDA, and LLVM specifically are listed as exceptions here rather than
+# through a shared vocabulary mechanism, because a shared allow-list entry for
+# any of these terms would have unwanted side effects on other, unrelated
+# terminology and trademark checks elsewhere in this style set. The exception
+# has to live in this rule.
+#
+# AI, CI, and AMDGPU are not in the exceptions list below because `first`
+# only matches tokens of 3-5 uppercase letters — AI/CI (2 letters) and
+# AMDGPU (6 letters) never match it and can't trigger this rule at all.
+#
+# MAX/PRO are Ryzen AI product-name components (e.g. "Ryzen AI MAX+ PRO
+# 395"), not acronyms, but they're also common English words, so they
+# can't go in the blanket exceptions list without also silencing
+# legitimate "spell this out" flags on unrelated MAX/PRO usage elsewhere
+# in the same document — the exceptions list has no proximity awareness.
+# Instead, `second` has an added lookbehind branch that only treats
+# MAX/PRO as "already defined" when they occur within ~60 chars after
+# "Ryzen AI" on the same line. Note that because `conditional` compares
+# match sets over the whole scope (not strictly same-line), once MAX or
+# PRO is satisfied this way anywhere in a document, bare MAX/PRO elsewhere
+# in that same document are exempted too, even out of Ryzen AI context.
+extends: conditional
+message: "CORE-018: Spell out '%s', if it's unfamiliar to the audience."
+level: suggestion
+ignorecase: false
+first: '\b([A-Z]{3,5})\b'
+second: '(?:(?:\b[A-Z][a-z]+ )+\((?:[A-Z]+-)*|(?<=Ryzen AI[^\n]{0,60}))([A-Z]{3,5})\)?'
+exceptions:
+  - API
+  - ASP
+  - CLI
+  - CPU
+  - CSS
+  - CSV
+  - DEBUG
+  - DOM
+  - DPI
+  - FAQ
+  - GCC
+  - GDB
+  - GET
+  - GPU
+  - GTK
+  - GUI
+  - HTML
+  - HTTP
+  - HTTPS
+  - IDE
+  - JAR
+  - JSON
+  - JSX
+  - LESS
+  - LLDB
+  - NET
+  - NOTE
+  - NVDA
+  - OSS
+  - PATH
+  - PDF
+  - PHP
+  - POST
+  - RAM
+  - REPL
+  - RSA
+  - SCM
+  - SCSS
+  - SDK
+  - SQL
+  - SSH
+  - SSL
+  - SVG
+  - TBD
+  - TCP
+  - TODO
+  - URI
+  - URL
+  - USB
+  - UTF
+  - XML
+  - XSS
+  - YAML
+  - ZIP
+  # ROCm/AMD-specific additions:
+  - AMD
+  - SMI
+  - LLVM
+  - APU
+  - SIMD
+  - VRAM
+  - CUDA
+  - HIP
+  - CDNA
+  - RDNA
+  - GCN
+  - GEMM
+  # Commonly-known acronyms:
+  - RCCL
+  - SQTT
+  - ROCR
+  - HSA
+  - ISA
+  - MPICH
+  - PID
+  - LLM
+  - OEM
+  - GPT
+  # Proper names that read as acronyms:
+  - JAX
+  - EPYC
+  - SUSE

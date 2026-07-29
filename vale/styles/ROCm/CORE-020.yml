@@ -1,0 +1,33 @@
+# CORE-020 — Units of measure (supersedes Google.Units)
+#
+# Identical detection logic to Google.Units (same token shapes, same
+# message/level) but the bare-"B" (bytes, no metric prefix) token gets two
+# negative lookbehinds so the check doesn't fire on LLM model-name
+# parameter-count suffixes, which use a bare "B" the same way Google.Units
+# expects a byte count to be written:
+#   - GPT-OSS-20B      -> the digits are hyphen-joined to the model name
+#   - Llama 3 405B     -> the digits are preceded by another bare number
+#                         (the model's version number) and a space
+#
+# This can't be done via `exceptions:`: it's non-functional for
+# `existence`-type rules (errata-ai/vale#894, #213), same limitation as
+# CORE-019/Google.Colons. The exclusion has to live in the token regex.
+#
+# Scope note: this only covers the two shapes above. A model name written
+# as "Name NNNB" with no hyphen and no version number in between (e.g.
+# "Llama 70B") is not excluded and will still be flagged -- narrowing that
+# further risks swallowing genuine byte-count typos like "Buffer 20B".
+#
+# The kB/MB/GB/TB token and the time-unit token are untouched: neither
+# collides with LLM parameter-count naming (no ROCm docs use "20MB" or
+# similar to mean a parameter count), so they keep flagging real
+# missing-space issues (e.g., "20GB" -> "20 GB").
+extends: existence
+message: "CORE-020: Put a nonbreaking space between the number and the unit in '%s'."
+link: "https://developers.google.com/style/units-of-measure"
+nonword: true
+level: error
+tokens:
+  - '\b\d+(?:kB|MB|GB|TB)'
+  - '(?<!-)(?<!\d )\b\d+B\b'
+  - '\b\d+(?:ns|ms|s|min|h|d)'

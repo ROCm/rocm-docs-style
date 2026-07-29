@@ -1,0 +1,16 @@
+# SPELL-006 — Preferred technical terms / inclusive language (warning)
+# Reuses wordlists/preferred-terms.yml (inclusive, technical). The unambiguous inclusive
+# swaps that CORE-004 does not already own at error level are kept here; to avoid
+# duplicate findings, whitelist/blacklist/sanity check/slave live in CORE-004
+# (error) and are NOT repeated here.
+# "master" -> "primary" and the open source / command line POS-dependent pairs
+# are deferred to the LLM tier (context-dependent), per the wordlist notes.
+extends: substitution
+message: "SPELL-006: Use the preferred term '%s' instead of '%s'."
+level: warning
+ignorecase: true
+nonword: false
+swap:
+  'work-around': workaround
+  'machine learning': machine learning
+  ml: ML

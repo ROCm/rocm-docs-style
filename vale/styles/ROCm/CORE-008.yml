@@ -1,0 +1,87 @@
+# CORE-008 — Sentence case for headings (error)
+#
+# PARTIAL CONVERSION. Vale's `capitalization` with
+# match: $sentence checks that a heading reads as a sentence (first word + proper
+# nouns capitalized). The known limitation called out in the task is proper
+# nouns: Vale only treats a fixed `exceptions` list as "legitimately capitalized"
+# words, so multi-word product names and unlisted proper nouns can still trip it.
+# The exceptions list below is seeded from the ROCm vocabulary; the LLM tier
+# resolves genuine proper-noun headings this rule cannot know about.
+extends: capitalization
+message: "CORE-008: Use sentence case for headings (capitalize only the first word and proper nouns)."
+level: error
+scope: heading
+match: $sentence
+exceptions:
+  - ROCm
+  - HIP
+  - AMD
+  - AMD Instinct
+  - AMD Radeon
+  - AMD EPYC
+  - AMD Ryzen
+  - CDNA
+  - RDNA
+  - HIPify
+  - Linux
+  - Windows
+  - NVIDIA
+  - CUDA
+  - PyTorch
+  - TensorFlow
+  - GPU
+  - GPUs
+  - CPU
+  - API
+  - APIs
+  - SDK
+  - Python
+  - AI
+  - ROCProfiler
+  - ROCprofiler-SDK
+  - Streaming Performance Monitors
+  - SPM
+  - ROCprof Trace Decoder
+  - ROCprof Compute Viewer
+  - ROCm Compute Profiler
+  - ROCm Systems Profiler
+  - AMD SMI
+  - ROCm Data Center
+  - RDC
+  - Device Metrics Exporter
+  - DME
+  - ROCm Bandwidth Test
+  - RBT
+  - hipFile
+  - I/O
+  - hipSPARSE
+  - ROCm Core SDK
+  - LLM
+  - Radeon
+  - Instinct
+  - Ryzen
+  # `+` is escaped below: unescaped, it breaks the generated regex (same
+  # issue that got C++ removed from this list).
+  - Ryzen AI MAX / MAX\+ Series Processors
+  - RDNA2
+  - RDNA3
+  - RDNA4
+  - CDNA2
+  - CDNA3
+  - CDNA4
+  - LLVM
+  - ASan
+  - hipCUB
+  - DeviceMerge
+  - Composable Kernel
+  - hipRAND
+  - rocSHMEM
+  - rocprofiler-compute
+  - rocprofiler-systems
+  - ROCr Debug Agent
+  - ROCR
+  - ROCm Data Center Tool
+  - ROCm Validation Suite
+  - TransferBench
+  - MIGraphX
+  - Torch-MIGraphX

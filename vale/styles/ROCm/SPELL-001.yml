@@ -1,0 +1,17 @@
+# SPELL-001 — American English spelling, primary Merriam-Webster entry (error)
+# Reuses wordlists/preferred-terms.yml (american-english). Word set is the
+# SPELL-001 example list, partitioned away from CORE-001 (which owns colour,
+# behaviour, organise, licence) and SPELL-002 (the remaining variants) so each
+# British spelling is flagged by exactly one rule.
+extends: substitution
+message: "SPELL-001: Use American English spelling '%s' instead of '%s'."
+level: error
+ignorecase: true
+nonword: false
+swap:
+  analyse: analyze
+  catalogue: catalog
+  centre: center
+  grey: gray
+  judgement: judgment
+  modelling: modeling

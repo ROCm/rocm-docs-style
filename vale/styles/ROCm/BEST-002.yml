@@ -1,0 +1,10 @@
+# BEST-002 — No manual section numbering in headings (error)
+# Flags headings that begin with a manual number like "## 1. Installation".
+# scope: heading restricts to headings so numbered prose lists are not flagged.
+extends: existence
+message: "BEST-002: Do not number headings manually — Sphinx generates section numbers automatically."
+level: error
+scope: heading
+nonword: true
+tokens:
+  - '^\d+\.?\s+\S'

@@ -1,0 +1,13 @@
+# CORE-021 — Version-number placeholder casing (warning)
+# Version-number placeholders must use lowercase letters (7.x.y), not
+# uppercase (7.X.Y). Matches a digit run followed by a literal dot and an
+# uppercase letter, optionally repeated for additional dot-separated
+# components. Does not fire on real version numbers (7.0.1), correctly-cased
+# placeholders (7.x.y), or product names with no dot before the capital
+# (MI300X, MI300A).
+extends: existence
+message: "CORE-021: Use lowercase letters for the version-number placeholder in '%s'."
+level: warning
+nonword: true
+tokens:
+  - '\b\d+\.[A-Z](?:\.[A-Z])*\b'
