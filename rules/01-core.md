@@ -529,6 +529,27 @@ Install ROCm 7.x.y using your package manager.
 
 ---
 
+### Rule: CORE-022
+**Severity:** warning
+**Scope:** All documentation — version number formatting
+**Rule:** Do not use a `v` prefix before a version string in documentation as it's redundant.
+**Wrong:**
+```md
+Install ROCm v7.14.0 using your package manager.
+ROCm v5.7 is no longer supported.
+CUDA v12.0 is required.
+```
+**Right:**
+```md
+Install ROCm 7.14.0 using your package manager.
+ROCm 5.7 is no longer supported.
+CUDA 12.0 is required.
+```
+**Note:** Implemented in Vale as `vale/styles/ROCm/CORE-022.yml`, an `existence` rule matching a standalone `v` (with an optional dot and optional space) immediately preceding a digit sequence, such as `v7.14`, `v.7.14`, or `v 7.14`.
+**Source:** ROCm custom
+
+---
+
 ## Description lists
 
 ### Rule: CORE-023
