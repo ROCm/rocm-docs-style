@@ -1,0 +1,9 @@
+# CORE-022 — Unnecessary "v" before version strings (warning)
+#
+# A standalone "v" immediately preceding a numeric version is redundant.
+extends: existence
+message: "CORE-022: Remove the unnecessary 'v' before the version number in '%s'."
+level: warning
+nonword: true
+raw:
+  - '\bv\.? ?\d+(?:\.\d+)*\b'
