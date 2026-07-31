@@ -35,9 +35,8 @@ jobs:
       - name: Install Vale (latest)
         run: |
           curl -sS https://api.github.com/repos/vale-cli/vale/releases/latest \
-            | jq '.assets[] | select(.name | contains("Linux_64-bit.tar.gz"))' \
-            | jq '.browser_download_url' \
-            | xargs wget -c {}
+            | jq -r '.assets[] | select(.name | contains("Linux_64-bit.tar.gz")) | .browser_download_url' \
+            | xargs wget -c
           sudo tar -xzf vale_*.tar.gz -C /usr/local/bin
           vale --version
 

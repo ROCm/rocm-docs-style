@@ -4,8 +4,6 @@
 # wordlists, or docs here, this validates that:
 #   1. The Vale config still loads (no broken StylesPath / missing style).
 #   2. Any Markdown the PR changed passes the repo's own Vale rules.
-#
-# GitHub-hosted, no secrets, no gateway — this is a pure Vale (static) repo.
 
 name: self-check
 
@@ -26,11 +24,12 @@ jobs:
         with:
           fetch-depth: 0          # needed to diff against the base branch
 
-      - name: Install Vale
+      - name: Install Vale (latest)
         run: |
-          VALE_VERSION="3.9.1"   # pin; bump deliberately
-          curl -sfL "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
-            | sudo tar -xz -C /usr/local/bin vale
+          curl -sS https://api.github.com/repos/vale-cli/vale/releases/latest \
+            | jq -r '.assets[] | select(.name | contains("Linux_64-bit.tar.gz")) | .browser_download_url' \
+            | xargs wget -c
+          sudo tar -xzf vale_*.tar.gz -C /usr/local/bin
           vale --version
 
       - name: Sync Vale packages
