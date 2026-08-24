@@ -1,11 +1,10 @@
 # Third-party trademarks commonly referenced in ROCm documentation
-# Source: AMD Third Party Marks and Attributions list (partial)
+# Source: ROCm custom (partial list, most relevant marks)
 #
 # symbol: the mark required by the trademark owner (™, ®, or none)
 # attribution: the required attribution statement
 #
 # NOTE: This is a partial list of marks most relevant to ROCm documentation.
-# For the full list, see legal/Third Party Marks and Attributions.xlsx.
 
 - mark: "Arm"
   symbol: "®"

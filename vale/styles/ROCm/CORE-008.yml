@@ -22,7 +22,7 @@ exceptions:
   - AMD Ryzen
   - CDNA
   - RDNA
-  - HIPify
+  - HIPIFY
   - Linux
   - Windows
   - NVIDIA
