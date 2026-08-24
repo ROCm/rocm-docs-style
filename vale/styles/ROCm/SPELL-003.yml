@@ -1,11 +1,10 @@
 # SPELL-003 — ROCm product and library name casing (error)
 #
-# The canonical casing list lives in the Vale vocabulary
-# (styles/config/vocabularies/ROCm/accept.txt), generated from
-# wordlists/preferred-terms.yml. Vale's built-in Vale.Terms check already flags
-# any non-canonical casing of those accepted terms. This rule additionally maps
-# the most common wrong spellings from the SPELL-003 example table to their
-# correct form so the fix is explicit and carries the SPELL-003 ID.
+# This rule is a standalone substitution swap list: it maps common miscasings
+# of ROCm product/library names (matching the canonical casing in
+# wordlists/preferred-terms.yml's rocm-components list) to the correct form,
+# with an explicit SPELL-003 message. There is no backing Vale vocabulary or
+# Vale.Terms check — this swap list is the sole enforcement mechanism.
 # nonword + case-sensitive matching: only the wrong casings below match; the
 # correct casing (e.g. rocBLAS) is left untouched.
 # Negative lookahead on the ROCm key excludes kebab-case repo/package slugs

@@ -1,9 +1,9 @@
 # SPELL-005 — Abbreviation and acronym casing (warning)
 #
-# The canonical casings live in the Vale vocabulary accept.txt (generated from
-# wordlists/preferred-terms.yml + the SPELL-005 table). This rule maps the
-# common wrong casings from the rule's table to the correct form with an
-# explicit SPELL-005 message.
+# This rule is a standalone substitution swap list: it maps common wrong
+# casings of abbreviations/acronyms to their correct form with an explicit
+# SPELL-005 message. There is no backing Vale vocabulary or Vale.Terms check —
+# this swap list is the sole enforcement mechanism.
 # Case-sensitive (ignorecase: false) so only the wrong casings match.
 # Exception honored: the rule defers to tool casing inside code blocks/paths/CLI
 # (e.g. `cmake`); Vale's Markdown/rST scope already excludes code spans and

@@ -4,16 +4,20 @@ A [Vale](https://vale.sh) style guide for ROCm documentation. It provides a set
 of rules, wordlists, and CI tooling for catching style, spelling, and
 terminology issues in ROCm docs before they're merged.
 
-The rule set is layered on top of two established baselines:
+The rule set is layered on top of two established baselines, applied in
+priority order:
 
 1. **ROCm custom rules** — product-specific conventions (heading case,
    trademarks, environment-variable formatting, ROCm/AMD product-name casing,
-   and more).
+   and more). A ROCm rule always wins.
 2. **[Google Developer Documentation Style Guide](https://developers.google.com/style)**
-   and **[Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/)**
-   — used as general-purpose baselines, with a handful of checks disabled
-   where a ROCm rule supersedes them (see [Configuration](#configuration)
-   below).
+   — the primary general-purpose baseline.
+3. **[Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/)**
+   — a gap-filler baseline for topics Google doesn't cover.
+
+Where two of these checks cover the same topic, the lower-priority one is
+disabled rather than left to produce duplicate or conflicting findings (see
+[Configuration](#configuration) below).
 
 ## Local usage
 
@@ -112,19 +116,48 @@ the repository root. Key points:
 
 - `StylesPath = styles` — style packages live in [vale/styles/](vale/styles/),
   resolved relative to the `.vale.ini` file.
-- `MinAlertLevel = suggestion` — all findings are reported, including
-  low-severity suggestions.
+- `MinAlertLevel = warning` — only `warning`- and `error`-level findings are
+  reported; low-severity suggestions are not.
 - `BasedOnStyles = Vale, Google, Microsoft, ROCm` — applied to all `.md`
   files.
 
-A few upstream Google/Microsoft checks are turned off because a ROCm rule
-supersedes them:
+Where a Google check and a Microsoft check cover the same topic, the less
+extensive one is disabled — ties and cases where Google is broader default to
+keeping Google (Microsoft is a gap-filler baseline), but where Microsoft is
+demonstrably broader, Google is disabled instead:
 
-| Disabled check | Why |
-|---|---|
-| `Vale.Spelling` | ROCm/AMD product and library names (e.g. ROCm, hipBLAS, MIOpen) aren't in standard dictionaries, and this repo doesn't ship a custom spelling vocabulary. Casing and spelling of these names is enforced by the `ROCm.SPELL-*` rules instead. |
-| `Google.Headings`, `Microsoft.Headings` | `ROCm.CORE-008` owns sentence-case heading capitalization, with its own exceptions list for product and library names. |
-| `Google.Acronyms`, `Google.Colons`, `Google.Units` | `ROCm.CORE-018`/`CORE-019`/`CORE-020` supersede these with ROCm/AMD-aware detection logic (extended acronym exceptions, proper-noun-aware colon casing, and unit-of-measure handling). |
+| Disabled check | Kept instead | Why |
+|---|---|---|
+| `Vale.Spelling` | `ROCm.SPELL-*` | ROCm/AMD product and library names (e.g. ROCm, hipBLAS, MIOpen) aren't in standard dictionaries, and this repo doesn't ship a custom spelling vocabulary. Casing and spelling of these names is enforced by the `ROCm.SPELL-*` rules instead. |
+| `Google.Headings`, `Microsoft.Headings` | `ROCm.CORE-008` | `ROCm.CORE-008` owns sentence-case heading capitalization, with its own exceptions list for product and library names. |
+| `Google.Acronyms`, `Microsoft.Acronyms` | `ROCm.CORE-018` | `ROCm.CORE-018` supersedes both with ROCm/AMD-aware detection logic (extended acronym exceptions). |
+| `Google.Colons` | `ROCm.CORE-019` | `ROCm.CORE-019` supersedes it with proper-noun-aware colon casing. |
+| `Google.Units` | `ROCm.CORE-020` | `ROCm.CORE-020` supersedes it with unit-of-measure handling that also accounts for LLM model-name parameter-count suffixes. |
+| `Microsoft.HeadingAcronyms` | `ROCm.CORE-008` | Conflicts with `ROCm.CORE-008`'s heading-exceptions policy, which explicitly permits dozens of acronyms (ROCm, HIP, GPU, SDK, AMD, ...) in headings. |
+| `Microsoft.HeadingColons` | `ROCm.CORE-008` | Wants to capitalize the word after a colon in headings; `ROCm.CORE-008` enforces sentence case (lowercase after a colon unless a proper noun), which directly contradicts it. |
+| `Google.Contractions` | `Microsoft.Contractions` | Microsoft covers the same substitution list, plus a reverse contracted→expanded swap before end punctuation, avoiding an awkward contraction at a sentence boundary. |
+| `Google.EmDash` | `Microsoft.Dashes` | Microsoft matches the same two-sided-space defect, plus one-sided spacing around the dash, which Google's regex misses. |
+| `Google.FirstPerson` | `Microsoft.FirstPerson` | Microsoft matches the same tokens, plus the contracted forms I'd/I'll/I've. |
+| `Google.Latin` | `Microsoft.Foreign` | Microsoft covers the same e.g./i.e. substitutions, plus viz./ergo. |
+| `Google.HeadingPunctuation` | `Microsoft.HeadingPunctuation` | Microsoft flags the same trailing-period case, plus trailing `?`/`!` in headings. |
+| `Google.OptionalPlurals` | `Microsoft.Plurals` | Microsoft flags the same "(s)" case, plus "(es)". |
+| `Google.Quotes` | `Microsoft.Quotes` | Microsoft flags the same straight-quote case, plus curly/smart quotes. |
+| `Microsoft.AMPM` | `Google.AMPM` | Functionally identical. |
+| `Microsoft.DateFormat`, `Microsoft.DateOrder` | `Google.DateFormat` | Google covers two malformed-date shapes; Microsoft's only edge (2-digit years) doesn't outweigh that broader coverage. |
+| `Microsoft.Ellipses` | `Google.Ellipses` | Byte-identical. |
+| `Microsoft.Gender` | `Google.Gender` | Google has an extra token, `(s)he`. |
+| `Microsoft.GenderBias` | `Google.GenderBias` | Near-identical; Google's "mankind" replacement offers an extra alternative. |
+| `Microsoft.Hyphens` | `Google.LyHyphens` | Identical regex/action; only severity/link differ. |
+| `Microsoft.OxfordComma` | `Google.OxfordComma` | Google's regex is looser (no sentence-final-punctuation requirement), so it catches more instances. |
+| `Microsoft.Passive` | `Google.Passive` | Byte-identical. |
+| `Microsoft.Semicolon` | `Google.Semicolons` | Identical trigger, same level. |
+| `Microsoft.Spacing` | `Google.Spacing` | Byte-identical. |
+| `Microsoft.We` | `Google.We` | Byte-identical. |
+
+Contextual and stylistic judgment calls that no mechanical rule above can
+resolve — such as whether an unlisted proper noun is legitimately capitalized
+in a heading, or overall tone — are handled by a separate LLM-based review
+tier, not by Vale.
 
 ## Structure
 
