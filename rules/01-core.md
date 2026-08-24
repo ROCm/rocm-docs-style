@@ -336,29 +336,6 @@ Check GPU utilization with the AMD SMI tool.
 
 ---
 
-## Colons
-
-### Rule: CORE-019
-**Severity:** warning
-**Scope:** All documentation — colon capitalization
-**Rule:** Following Google style, the word after a colon should be lowercase unless it's a proper noun, the start of a complete quoted sentence, or otherwise requires a capital on its own merits. Don't flag capitalization when the word after the colon is a known ROCm/AMD product, library, or third-party proper noun — these must keep their fixed casing regardless of position in a sentence.
-**Wrong:**
-```md
-Note: This is important.
-```
-**Right:**
-```md
-Note: this is important.
-```
-
-**Also right (known proper noun, no lowercasing):**
-```md
-Requirement: ROCm 6.0 or later.
-```
-**Source:** ROCm custom (supersedes Google.Colons)
-
----
-
 ## Technical terms
 
 ### Rule: CORE-014
@@ -569,5 +546,5 @@ CUDA 12.0 is required.
 - **Verbose:** Prints extra diagnostic output.
 ```
 (The same convention applies in rST: rST inline strong emphasis also uses `**text**`, so the wrong/right forms above are unchanged.)
-**Note:** CORE-019 governs colon capitalization; CORE-023 is additive to it, covering the bold/colon *spacing and placement* mechanics that CORE-019 doesn't address. Don't report the same finding under both. Implemented in Vale as `vale/styles/ROCm/CORE-023.yml`, an `existence` rule matching the malformed bold-term/colon patterns.
+**Note:** CORE-019 (a general colon-capitalization rule) has been removed — it enforced guidance the current ROCm style guide no longer states, and directly contradicted the guide's "Description lists" section, which requires capitalizing the first word of each description. Implemented in Vale as `vale/styles/ROCm/CORE-023.yml`, an `existence` rule matching the malformed bold-term/colon patterns.
 **Source:** ROCm custom

@@ -169,44 +169,18 @@ Check GPU utilization with the AMD SMI tool.
 
 ---
 
-### DELTA-010: Colon capitalization known-name exceptions
+### DELTA-010: Colon capitalization (removed)
 
-**ROCm rule:** CORE-019
-**Google says:** `Google.Colons` flags any capital letter immediately after
-a colon followed by a space, on the theory that the word after a colon
-should be lowercase unless it independently requires a capital. It has no
-exceptions list.
-**Microsoft says:** N/A — `Microsoft.HeadingColons` addresses a different
-case (capitalization after a colon in headings) and is already disabled
-in favor of the Google/CORE-008 sentence-case direction; it does not
-provide a general exceptions mechanism either.
-**ROCm says:** Same detection logic as `Google.Colons`, but with a
-negative-lookahead exception so the check doesn't fire when the word
-right after the colon is a known ROCm/AMD product, library, or
-third-party proper noun (for example, "ROCm", "PyTorch", "CUDA",
-"Kubernetes") rather than an ordinary word that violates sentence case.
-The exception only applies to names that already start with an uppercase
-letter — lowercase-leading names like hipBLAS, rocFFT, cuDNN, and vLLM
-can never trigger the base `:\s[A-Z]` token in the first place.
-**Implication:** `Google.Colons` is disabled (`Google.Colons = NO`) in
-`.vale.ini` and superseded by `CORE-019`. "ROCm" specifically is handled
-as an exception within this rule rather than through a general
-accepted-terms list, for the same reason given above: a blanket exception
-would prevent other checks from correctly catching genuine capitalization
-errors involving that word.
-**Wrong:**
-```md
-Note: This is important.
-```
-**Right:**
-```md
-Note: this is important.
-```
-
-**Also right (known proper noun, no lowercasing):**
-```md
-Requirement: ROCm 6.0 or later.
-```
+**Status:** REMOVED. The ROCm rule this entry documented (CORE-019,
+implementing a `Google.Colons`-style "lowercase after a colon unless a
+proper noun" check) enforced guidance the current ROCm style guide no
+longer states, and directly contradicted the guide's "Description lists"
+section, which requires capitalizing the first word of each description.
+`Google.Colons` remains disabled in `.vale.ini` pending a docs-team
+decision on whether to re-enable it — see the CORE-019 removal report; it
+was not re-enabled as part of this removal since Google.Colons's own
+behavior is likely just as wrong against the current guide as CORE-019's
+was.
 
 ---
 

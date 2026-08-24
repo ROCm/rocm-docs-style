@@ -10,8 +10,9 @@
 #                         (the model's version number) and a space
 #
 # This can't be done via `exceptions:`: it's non-functional for
-# `existence`-type rules (errata-ai/vale#894, #213), same limitation as
-# CORE-019/Google.Colons. The exclusion has to live in the token regex.
+# `existence`-type rules (errata-ai/vale#894, #213), the same limitation
+# Google.Colons had (see CORE-019's removal note). The exclusion has to
+# live in the token regex.
 #
 # Scope note: this only covers the two shapes above. A model name written
 # as "Name NNNB" with no hyphen and no version number in between (e.g.

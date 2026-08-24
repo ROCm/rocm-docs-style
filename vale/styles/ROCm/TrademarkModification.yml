@@ -8,8 +8,8 @@
 # "AMD-X" (not a modification of the AMD mark) are excluded via a negative
 # lookahead in the hyphenated-combination token below. Vale's built-in
 # `exceptions:` field is broken for `existence`-type rules (errata-ai/vale#894,
-# #213), same limitation as CORE-019/CORE-020, so the exclusion has to live
-# in the regex instead.
+# #213), the same limitation CORE-020 works around, so the exclusion has to
+# live in the regex instead.
 extends: existence
 message: "Do not modify AMD trademarks (no possessive, plural, or hyphenated combination): '%s'."
 level: error
