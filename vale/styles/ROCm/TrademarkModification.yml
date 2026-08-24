@@ -4,6 +4,12 @@
 # ("AMD-EPYC", "AMD-optimized", "AMD-based") of AMD marks.
 # The AMD note in the wordlist: "Do not use possessively (AMD's). Do not
 # hyphenate or combine."
+# Known product names that are themselves legitimately hyphenated
+# "AMD-X" (not a modification of the AMD mark) are excluded via a negative
+# lookahead in the hyphenated-combination token below. Vale's built-in
+# `exceptions:` field is broken for `existence`-type rules (errata-ai/vale#894,
+# #213), same limitation as CORE-019/CORE-020, so the exclusion has to live
+# in the regex instead.
 extends: existence
 message: "Do not modify AMD trademarks (no possessive, plural, or hyphenated combination): '%s'."
 level: error
@@ -15,5 +21,5 @@ tokens:
   - "(?:EPYC|Ryzen|Instinct|Radeon|Threadripper|ROCm)'s"
   # Pluralized marks (mark + lowercase s).
   - '\b(?:EPYCs|Ryzens|Instincts|Radeons|Threadrippers)\b'
-  # Hyphenated combinations beginning with AMD.
-  - '\bAMD-[A-Za-z]+'
+  # Hyphenated combinations beginning with AMD, excluding known product names.
+  - '\bAMD-(?!XIO\b)[A-Za-z]+'
