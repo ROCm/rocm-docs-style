@@ -131,8 +131,8 @@ demonstrably broader, Google is disabled instead:
 | `Vale.Spelling` | `ROCm.SPELL-*` | ROCm/AMD product and library names (e.g. ROCm, hipBLAS, MIOpen) aren't in standard dictionaries, and this repo doesn't ship a custom spelling vocabulary. Casing and spelling of these names is enforced by the `ROCm.SPELL-*` rules instead. |
 | `Google.Headings`, `Microsoft.Headings` | `ROCm.CORE-008` | `ROCm.CORE-008` owns sentence-case heading capitalization, with its own exceptions list for product and library names. |
 | `Google.Acronyms`, `Microsoft.Acronyms` | `ROCm.CORE-018` | `ROCm.CORE-018` supersedes both with ROCm/AMD-aware detection logic (extended acronym exceptions). |
-| `Google.Colons` | `ROCm.CORE-019` | `ROCm.CORE-019` supersedes it with proper-noun-aware colon casing. |
 | `Google.Units` | `ROCm.CORE-020` | `ROCm.CORE-020` supersedes it with unit-of-measure handling that also accounts for LLM model-name parameter-count suffixes. |
+| `Google.Colons` | *(none — pending decision)* | Was superseded by `ROCm.CORE-019`, now removed (it enforced guidance the current ROCm style guide no longer states, and contradicted the guide's "Description lists" section). Left disabled rather than re-enabled: `Google.Colons`'s own behavior is likely just as wrong against the current guide. |
 | `Microsoft.HeadingAcronyms` | `ROCm.CORE-008` | Conflicts with `ROCm.CORE-008`'s heading-exceptions policy, which explicitly permits dozens of acronyms (ROCm, HIP, GPU, SDK, AMD, ...) in headings. |
 | `Microsoft.HeadingColons` | `ROCm.CORE-008` | Wants to capitalize the word after a colon in headings; `ROCm.CORE-008` enforces sentence case (lowercase after a colon unless a proper noun), which directly contradicts it. |
 | `Google.Contractions` | `Microsoft.Contractions` | Microsoft covers the same substitution list, plus a reverse contracted→expanded swap before end punctuation, avoiding an awkward contraction at a sentence boundary. |
