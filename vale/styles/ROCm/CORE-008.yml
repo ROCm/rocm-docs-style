@@ -69,6 +69,7 @@ exceptions:
   - CDNA2
   - CDNA3
   - CDNA4
+  - CDNA5
   - LLVM
   - ASan
   - hipCUB
