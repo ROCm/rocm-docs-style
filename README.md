@@ -156,8 +156,8 @@ demonstrably broader, Google is disabled instead:
 
 Contextual and stylistic judgment calls that no mechanical rule above can
 resolve — such as whether an unlisted proper noun is legitimately capitalized
-in a heading, or overall tone — are handled by a separate LLM-based review
-tier, not by Vale.
+in a heading, or overall tone — should be handled by a separate LLM-based review
+tier or a human, not by Vale.
 
 ## Structure
 

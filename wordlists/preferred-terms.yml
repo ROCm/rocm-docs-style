@@ -18,6 +18,7 @@ rocm-components:
   - HIPIFY
   - hipBLAS
   - hipBLASLt
+  - hipCIM
   - hipCUB
   - hipFFT
   - hipFile

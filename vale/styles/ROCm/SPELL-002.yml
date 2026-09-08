@@ -4,7 +4,8 @@
 # licence) or SPELL-001 (analyse/catalogue/centre/grey/judgement/modelling), so
 # no British spelling is double-flagged.
 # "dialogue" is intentionally omitted: the rule notes it is acceptable for
-# conversation and only wrong for UI — context-dependent, so the LLM tier judges.
+# conversation and only wrong for UI — context-dependent, requires LLM or human
+# judgment.
 extends: substitution
 message: "SPELL-002: Prefer American spelling '%s' instead of '%s'."
 level: warning

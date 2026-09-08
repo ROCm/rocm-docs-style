@@ -1,16 +1,15 @@
 # CORE-002 — Serial (Oxford) comma (error)
 #
-# PARTIAL CONVERSION. Vale's regex/token model cannot
-# reliably parse list grammar, so a faithful "every 3+ item list needs an Oxford
-# comma" check is not achievable without heavy false positives/negatives.
-# This rule fires on the high-confidence shape "..., <word> and/or <word>" with
-# no comma before the conjunction — i.e. "X, Y and Z" -> "X, Y, and Z". The
-# leading comma is what distinguishes a 3+ item list (which has an earlier comma)
-# from a 2-item "X and Y" (which does not), so requiring a comma before
-# "<word> and/or <word>" approximates the rule.
+# Vale's regex/token model cannot reliably parse list grammar, so a faithful
+# "every 3+ item list needs an Oxford comma" check is not achievable without
+# heavy false positives/negatives. This rule fires on the high-confidence shape
+# "..., <word> and/or <word>" with no comma before the conjunction — i.e. "X, Y
+# and Z" -> "X, Y, and Z". The leading comma is what distinguishes a 3+ item
+# list (which has an earlier comma) from a 2-item "X and Y" (which does not),
+# so requiring a comma before "<word> and/or <word>" approximates the rule.
 # Known limitation: it can over-fire on a non-list comma followed by a compound
-# verb/adjective (e.g. "the API, which runs fast and slow"); it is an error-level
-# best-effort flag and the LLM tier owns the general case.
+# verb/adjective (e.g. "the API, which runs fast and slow"); context-dependent,
+# requires human judgment.
 extends: existence
 message: "CORE-002: Use the serial (Oxford) comma — add a comma before 'and'/'or' in a list of three or more items."
 level: error

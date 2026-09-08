@@ -30,10 +30,10 @@
 # listed independently instead of relying on exact multi-word phrase
 # matching. This is intentionally permissive rather than strict — consistent
 # with CORE-008.yml's own documented preference to under-fire rather than
-# over-fire and protect reviewer trust, with the LLM tier as backstop.
+# over-fire and protect reviewer trust.
 extends: existence
 message: "CORE-008: Use sentence case for headings (capitalize only the first word and proper nouns)."
 level: error
 scope: raw
 tokens:
-  - '(?<=^#{1,6}[ \t]\S+[ \t]+.*)\b(?!(?:ROCm|HIP|AMD|CDNA|RDNA|HIPIFY|Linux|Windows|NVIDIA|CUDA|PyTorch|TensorFlow|GPUs|GPU|CPU|APIs|API|SDK|Python|AI|ROCProfiler|ROCprofiler-SDK|SPM|RDC|DME|RBT|hipFile|I/O|hipSPARSE|LLM|Radeon|Instinct|Ryzen|RDNA2|RDNA3|RDNA4|CDNA2|CDNA3|CDNA4|CDNA5|LLVM|ASan|hipCUB|DeviceMerge|hipRAND|rocSHMEM|rocprofiler-compute|rocprofiler-systems|ROCr|ROCR|TransferBench|MIGraphX|Torch-MIGraphX|EPYC|Streaming|Performance|Monitors|ROCprof|Trace|Decoder|Compute|Viewer|Profiler|Systems|SMI|Data|Center|Device|Metrics|Exporter|Bandwidth|Test|Core|MAX|Series|Processors|Debug|Agent|Tool|Validation|Suite|Composable|Kernel)\b)[A-Z]\S*'
+  - '(?<=^#{1,6}[ \t]\S+[ \t]+.*)\b(?!(?:ROCm|HIP|AMD|CDNA|RDNA|HIPIFY|Linux|Windows|NVIDIA|CUDA|PyTorch|TensorFlow|GPUs|GPU|CPU|APIs|API|SDK|Python|AI|ROCProfiler|ROCprofiler-SDK|SPM|RDC|DME|RBT|hipFile|I/O|hipSPARSE|LLM|Radeon|Instinct|Ryzen|RDNA2|RDNA3|RDNA4|CDNA2|CDNA3|CDNA4|CDNA5|LLVM|ASan|hipCUB|DeviceMerge|hipRAND|rocSHMEM|rocprofiler-compute|rocprofiler-systems|ROCr|ROCR|TransferBench|MIGraphX|Torch-MIGraphX|EPYC|Streaming|Performance|Monitors|ROCprof|Trace|Decoder|Compute|Viewer|Profiler|Systems|SMI|Data|Center|Device|Metrics|Exporter|Bandwidth|Test|Core|MAX|Series|Processors|Debug|Agent|Tool|Validation|Suite|Composable|Kernel|hipCIM)\b)[A-Z]\S*'

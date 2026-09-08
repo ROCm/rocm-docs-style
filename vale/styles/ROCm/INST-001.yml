@@ -1,12 +1,11 @@
 # INST-001 — Instinct/Radeon hardware are GPUs, not accelerators (error)
 #
-# PARTIAL CONVERSION. The rule targets "accelerator"
-# ONLY when it refers to Instinct/Radeon hardware; "accelerator" is fine for
-# other hardware. A bare substitution would over-fire. This raw regex only fires
-# when "Instinct"/"Radeon" (optionally followed by a model token such as MI300X)
-# precedes "accelerator(s)", capturing the rule's Wrong examples
-# ("AMD Instinct MI300X accelerator", "AMD Instinct accelerators") without
-# touching unrelated uses of "accelerator". The LLM tier owns looser phrasings.
+# The rule targets "accelerator" only when it refers to Instinct/Radeon
+# hardware; "accelerator" is fine for other hardware. A bare substitution would
+# over-fire. This raw regex only fires when "Instinct"/"Radeon" (optionally
+# followed by a model token such as MI300X) precedes "accelerator(s)", capturing
+# the rule's "Wrong" examples ("AMD Instinct MI300X accelerator", "AMD Instinct
+# accelerators") without touching unrelated uses of "accelerator".
 extends: existence
 message: "INST-001: Refer to AMD Instinct/Radeon hardware as a GPU, not an accelerator."
 level: error
