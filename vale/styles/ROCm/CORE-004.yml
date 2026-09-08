@@ -2,7 +2,8 @@
 # Reuses the inclusive-language replacements from
 # wordlists/preferred-terms.yml (inclusive) plus the gendered/ableist examples
 # in the rule. "master" is intentionally omitted here because it is git-context
-# dependent (see preferred-terms.yml note and SPELL-006); the LLM tier judges it.
+# dependent (see preferred-terms.yml note and SPELL-006); requires LLM or human
+# judgment.
 extends: substitution
 message: "CORE-004: Use inclusive language '%s' instead of '%s'."
 level: error

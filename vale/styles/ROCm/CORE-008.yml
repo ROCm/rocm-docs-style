@@ -1,12 +1,10 @@
 # CORE-008 — Sentence case for headings (error)
 #
-# PARTIAL CONVERSION. Vale's `capitalization` with
-# match: $sentence checks that a heading reads as a sentence (first word + proper
-# nouns capitalized). The known limitation called out in the task is proper
-# nouns: Vale only treats a fixed `exceptions` list as "legitimately capitalized"
-# words, so multi-word product names and unlisted proper nouns can still trip it.
-# The exceptions list below is seeded from the ROCm vocabulary; the LLM tier
-# resolves genuine proper-noun headings this rule cannot know about.
+# Vale's `capitalization` with match: $sentence checks that a heading reads as
+# a sentence (first word + proper nouns capitalized). The known limitation is
+# proper nouns: Vale only treats a fixed `exceptions` list as "legitimately
+# capitalized" words, so multi-word product names and unlisted proper nouns can
+# still trip it. The exceptions list below is seeded from the ROCm vocabulary.
 extends: capitalization
 message: "CORE-008: Use sentence case for headings (capitalize only the first word and proper nouns)."
 level: error
@@ -86,3 +84,4 @@ exceptions:
   - TransferBench
   - MIGraphX
   - Torch-MIGraphX
+  - hipCIM

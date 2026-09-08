@@ -4,7 +4,7 @@
 # duplicate findings, whitelist/blacklist/sanity check/slave live in CORE-004
 # (error) and are NOT repeated here.
 # "master" -> "primary" and the open source / command line POS-dependent pairs
-# are deferred to the LLM tier (context-dependent), per the wordlist notes.
+# are deferred to human judgment (context-dependent), per the wordlist notes.
 extends: substitution
 message: "SPELL-006: Use the preferred term '%s' instead of '%s'."
 level: warning

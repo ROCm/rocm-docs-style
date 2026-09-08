@@ -3,7 +3,7 @@
 # preferred/avoid pairs are expanded here into substitutions.
 # Note: "command line" (noun) vs "command-line" (adjective) and
 # "open source/open-source" are context/POS-dependent and are handled in
-# SPELL-006 / the LLM tier, not here, to avoid wrong auto-fixes.
+# SPELL-006, not here, to avoid wrong auto-fixes.
 extends: substitution
 message: "SPELL-004: Use the preferred compound form '%s' instead of '%s'."
 level: warning

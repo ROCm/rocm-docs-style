@@ -176,11 +176,9 @@ implementing a `Google.Colons`-style "lowercase after a colon unless a
 proper noun" check) enforced guidance the current ROCm style guide no
 longer states, and directly contradicted the guide's "Description lists"
 section, which requires capitalizing the first word of each description.
-`Google.Colons` remains disabled in `.vale.ini` pending a docs-team
-decision on whether to re-enable it — see the CORE-019 removal report; it
-was not re-enabled as part of this removal since Google.Colons's own
-behavior is likely just as wrong against the current guide as CORE-019's
-was.
+`Google.Colons` remains disabled in `.vale.ini`; it was not re-enabled as
+part of this removal since Google.Colons's own behavior is likely just as
+wrong against the current guide as CORE-019's was.
 
 ---
 
