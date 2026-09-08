@@ -165,7 +165,7 @@ tier or a human, not by Vale.
 |---|---|
 | [vale/.vale.ini](vale/.vale.ini) | Vale configuration |
 | [vale/styles/ROCm/](vale/styles/ROCm/) | ROCm-specific Vale rules (committed) |
-| [vale/styles/Google/](vale/styles/Google/), `vale/styles/Microsoft/` | Google/Microsoft Vale packages (fetched via `vale sync`, not committed) |
+| [vale/styles/Google/](vale/styles/Google/), [vale/styles/Microsoft/](vale/styles/Microsoft/) | Google/Microsoft Vale packages (fetched via `vale sync`, not committed) |
 | [wordlists/](wordlists/) | Term lists: AMD trademarks, third-party trademarks, banned/restricted terms, and preferred terminology |
 | [rules/](rules/) | Human-readable documentation of the ROCm rule set, organized by topic |
 | [gh-workflows/consumer-example.yml](gh-workflows/consumer-example.yml) | Template CI workflow for consuming repos |
