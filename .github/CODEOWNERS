@@ -1,0 +1,10 @@
+# For now, the ROCm documentation team owns everything by default.
+* @ROCm/rocm-documentation
+
+# Likely to be maintained by ROCm documentation team forever
+gh-workflows/* @ROCm/rocm-documentation
+rules/* @ROCm/rocm-documentation
+vale/* @ROCm/rocm-documentation
+wordlists/* @ROCm/rocm-documentation
+
+.github/workflows/* @ROCm/rocm-documentation
