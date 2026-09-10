@@ -3,7 +3,16 @@
 # Runs on PRs to this repo (rocm-docs-style). When someone adds or edits rules,
 # wordlists, or docs here, this validates that:
 #   1. The Vale config still loads (no broken StylesPath / missing style).
-#   2. Any Markdown the PR changed passes the repo's own Vale rules.
+#   2. Any Markdown or reStructuredText the PR changed passes the repo's own Vale
+#      rules — EXCEPT this repo's own top-level README.md, CONTRIBUTING.md, and
+#      SECURITY.md. Those are GitHub/repo meta-documentation *about* this project,
+#      not ROCm product documentation, and are not expected to conform to the
+#      ROCm style guide this repo ships. Do NOT remove this exemption to "fix" a
+#      failing check on those files — rewrite the check's expectations instead,
+#      or take it up with the repo owner; the accepted fix is exclusion, not a
+#      prose rewrite. (This exemption is local to this repo's own CI — it is
+#      NOT part of vale/.vale.ini, which is shipped to and consumed by other
+#      ROCm repos, where a README is normally real user-facing documentation.)
 
 name: self-check
 
@@ -20,13 +29,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out the PR
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0          # needed to diff against the base branch
 
       - name: Install Vale (latest)
         run: |
-          curl -sS https://api.github.com/repos/vale-cli/vale/releases/latest \
+          curl -sS -H "Authorization: Bearer ${{ github.token }}" \
+            https://api.github.com/repos/vale-cli/vale/releases/latest \
             | jq -r '.assets[] | select(.name | contains("Linux_64-bit.tar.gz")) | .browser_download_url' \
             | xargs wget -c
           sudo tar -xzf vale_*.tar.gz -C /usr/local/bin
@@ -38,15 +48,28 @@ jobs:
       - name: Validate the Vale config loads
         run: vale --config=vale/.vale.ini ls-config >/dev/null
 
-      - name: Lint changed Markdown (the PR's own additions)
+      - name: Lint changed Markdown and reStructuredText (the PR's own additions)
         run: |
           BASE="${{ github.event.pull_request.base.sha }}"
-          # Markdown files this PR added/changed, EXCLUDING the rules/ docs
-          # (those are rule definitions, not prose to lint — adjust if you want
-          #  them linted too).
-          FILES=$(git diff --name-only --diff-filter=ACM "$BASE" -- '*.md' ':(exclude)rules/**' || true)
+          # Markdown/RST files this PR added/changed, EXCLUDING:
+          #   - rules/**            — rule definitions, not prose to lint (adjust
+          #                           if you want them linted too).
+          #   - README.md, CONTRIBUTING.md, SECURITY.md — this repo's own
+          #                           top-level meta-docs, exempted per repo-owner
+          #                           decision (see header comment above for why).
+          #                           Deliberately bare (root-anchored), NOT
+          #                           "**/"-prefixed like the LICENSE exception in
+          #                           vale/.vale.ini: the intent is only the
+          #                           top-level files that describe *this repo*,
+          #                           not any README/CONTRIBUTING/SECURITY that
+          #                           might show up nested somewhere — those would
+          #                           be real authored docs and should still be
+          #                           linted.
+          FILES=$(git diff --name-only --diff-filter=ACM "$BASE" -- '*.md' '*.rst' \
+            ':(exclude)rules/**' \
+            ':(exclude)README.md' ':(exclude)CONTRIBUTING.md' ':(exclude)SECURITY.md' || true)
           if [ -z "$FILES" ]; then
-            echo "No changed Markdown to lint."
+            echo "No changed Markdown or reStructuredText to lint."
             exit 0
           fi
           echo "Linting:"; echo "$FILES"

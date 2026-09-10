@@ -5,10 +5,34 @@
 # at error level on the same span. To avoid duplicate findings, META-016 is
 # scoped narrowly to the SEO-only phrasing "click this"/"click this link"/"go
 # here" that CORE-012's token list does not cover, and runs at warning level.
-# Vale 3 removed `scope: link`, so this matches the Markdown link syntax via raw.
+# CORE-012's word list and this one are deliberately disjoint (no phrase here
+# is a prefix/superset of one there or vice versa) — see CORE-012.yml's own
+# header. Keep it that way if either list is ever edited.
+#
+# Vale 3 removed `scope: link`, so this matches the raw markup directly, for
+# both Markdown and reStructuredText, mirroring CORE-012's three forms:
+#
+#   1. Markdown: [click this](...), [go here](...), etc.
+#   2. rST inline external link with an embedded URI: `click this <url>`_
+#      (and its anonymous `__` variant — one alternative covers both, same
+#      reasoning as CORE-012).
+#   3. rST Sphinx cross-reference roles with explicit anchor text:
+#      :doc:`go here <path>` and :ref:`go here <label>`.
+#
+# As with CORE-012, the bare rST named reference (`click this`_, with no
+# embedded `<url>`) is deliberately NOT matched — same false-positive/rarity
+# reasoning as documented in CORE-012.yml applies equally here.
+#
+# All three forms live in ONE `raw` list entry, joined with top-level `|`,
+# not as three separate list entries — Vale's `existence` extension
+# concatenates multiple `raw` entries into one pattern instead of OR-ing
+# them (confirmed by direct testing; see CORE-012.yml's header for how that
+# was verified), so separate entries would silently never match. The
+# leading `(?i)` covers all three branches, since Go/RE2 flags aren't scoped
+# by top-level `|`, only by an explicit group.
 extends: existence
 message: "META-016: Use keyword-rich, descriptive anchor text instead of a generic anchor."
 level: warning
 scope: raw
 raw:
-  - '\[(?i)(click this link|click this|go here)\]\('
+  - '(?i)\[(click this link|click this|go here)\]\(|`(click this link|click this|go here)\s+<[^`\n]*>`_|:(doc|ref):`(click this link|click this|go here)\s+<[^`\n]*>`'

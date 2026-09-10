@@ -31,10 +31,12 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: ROCm/rocm-docs-style      # the public style-guide repo
+          path: rocm-docs-style                 # keep alongside docs-repo, not at workspace root
 
       - name: Install Vale (latest)
         run: |
-          curl -sS https://api.github.com/repos/vale-cli/vale/releases/latest \
+          curl -sS -H "Authorization: Bearer ${{ github.token }}" \
+            https://api.github.com/repos/vale-cli/vale/releases/latest \
             | jq -r '.assets[] | select(.name | contains("Linux_64-bit.tar.gz")) | .browser_download_url' \
             | xargs wget -c
           sudo tar -xzf vale_*.tar.gz -C /usr/local/bin
@@ -45,10 +47,16 @@ jobs:
           cd rocm-docs-style/vale
           vale sync            # downloads the Google/Microsoft packages referenced by .vale.ini
 
-      - name: Vale-check the PR's changed Markdown
+      - name: Vale-check the PR's changed Markdown and reStructuredText
         run: |
-          cd docs-repo # change this to actual path
+          # This matches the `path: docs-repo` set on the first checkout step above.
+          # If you change that `path:`, update this `cd` to match.
+          cd docs-repo
           BASE="${{ github.event.pull_request.base.sha }}"
+          # Add your own ':(exclude)...' pathspecs here if this repo has
+          # meta-docs (e.g. README.md, CONTRIBUTING.md, SECURITY.md) that you
+          # don't want held to the ROCm style guide — that's your call to make,
+          # not this template's.
           FILES=$(git diff --name-only --diff-filter=ACM "$BASE" -- '*.md' '*.rst' || true)
           if [ -z "$FILES" ]; then
             echo "No changed docs to lint."

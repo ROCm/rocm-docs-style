@@ -1,13 +1,49 @@
 # CORE-012 — Meaningful link anchor text (error)
 #
-# Vale 3 removed `scope: link`, so this matches generic anchor text inside the
-# Markdown link syntax directly: [here](...), [click here](...), [this](...),
-# etc. The `raw` regex captures the bracketed anchor text only when it is
-# immediately followed by a link target "(", so ordinary prose words like "here"
-# are not flagged.
+# Vale 3 removed `scope: link`, so this matches generic anchor text directly
+# in the raw markup, for both Markdown and reStructuredText. Each alternative
+# requires the generic phrase to be the *entire* anchor text (anchored right
+# after the opening delimiter, with the link-target marker immediately
+# after), so ordinary prose words like "here" are not flagged — only "here"
+# used as a link's whole anchor text is.
+#
+#   1. Markdown: [here](...), [click here](...), [this](...), etc.
+#   2. rST inline external link with an embedded URI: `here <url>`_ and its
+#      anonymous double-underscore variant `here <url>`__. The pattern ends
+#      in a literal backtick + single underscore with no trailing anchor, so
+#      it matches the first underscore of `__` too — one alternative covers
+#      both forms without needing a separate one.
+#   3. rST Sphinx cross-reference roles that carry explicit anchor text:
+#      :doc:`here <path>` and :ref:`here <label>`. The bare, text-less forms
+#      (:doc:`path`, :ref:`label`) have no separate anchor text to judge, so
+#      they're outside this rule's concern by construction — the pattern only
+#      matches when a `<target>` follows the phrase.
+#
+# Deliberately NOT matched: the bare rST named reference `here`_ (no embedded
+# `<url>`). Unlike the other two rST forms, it has no `<...>` or `:role:`
+# context to anchor the match to, so a generic-word regex would risk matching
+# unrelated backtick-delimited text ending in `_` for other reasons. It's
+# also not how this docs set actually writes internal/external links in rST
+# — see the CORE-012 examples in rules/01-core.md, which use the
+# embedded-URI and :doc: forms, not the bare named-reference form — so the
+# false-positive risk isn't worth taking on for a pattern that's rarely, if
+# ever, authored here.
+#
+# All three forms live in ONE `raw` list entry, joined with top-level `|`,
+# rather than as three separate list entries. Tested directly against this
+# Vale install: the `existence` extension does NOT treat multiple `raw` list
+# entries as independent alternatives — it concatenates them (string-joined,
+# with no separator) into a single pattern. A quick standalone check (two
+# entries `'AAA'` and `'BBB'` matched neither "AAA" nor "BBB" alone, only
+# literal adjacent "AAABBB") confirmed this. So a single entry with explicit
+# `|` alternation is not just "more readable" here — it's the only form that
+# behaves as OR instead of AND-adjacent. The leading `(?i)` applies to the
+# rest of the pattern regardless of the top-level `|` branches (Go/RE2 flags
+# aren't scoped by alternation, only by an explicit group), so one `(?i)` up
+# front covers all three branches.
 extends: existence
 message: "CORE-012: Use descriptive link anchor text instead of a generic anchor."
 level: error
 scope: raw
 raw:
-  - '\[(?i)(here|click here|this document|this page|link|this|read more|more)\]\('
+  - '(?i)\[(here|click here|this document|this page|link|this|read more|more)\]\(|`(here|click here|this document|this page|link|this|read more|more)\s+<[^`\n]*>`_|:(doc|ref):`(here|click here|this document|this page|link|this|read more|more)\s+<[^`\n]*>`'
