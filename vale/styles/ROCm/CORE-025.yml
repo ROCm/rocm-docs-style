@@ -1,0 +1,34 @@
+# CORE-025 — Words to avoid (supersedes Microsoft.Avoid) (error)
+#
+# Derived from Microsoft.Avoid's token list, with "backend" removed. Microsoft
+# lists "backend" as a word to avoid, but ROCm's own style guide says the
+# opposite: "backend" is the PREFERRED compound form and "back-end"/"back end"
+# are the discouraged ones (rules/02-spelling-terminology.md,
+# wordlists/preferred-terms.yml, enforced by ROCm.SPELL-004). Left enabled,
+# Microsoft.Avoid reported every correct use of "backend" at error level, which
+# fails CI on the ROCm-preferred spelling and accounted for ~92% of all
+# Microsoft.Avoid alerts when this config was first run against real docs.
+# Per the precedence order, the ROCm rule wins.
+#
+# Everything else is copied verbatim from Microsoft.Avoid, including its
+# severity.
+#
+# MAINTENANCE: this is a manual fork, not a live reference. Microsoft.Avoid
+# is fetched via `vale sync` (vale/styles/Microsoft/Avoid.yml) and can change
+# upstream at any time; those changes are NOT picked up here automatically.
+# When Microsoft's list is updated, diff it against this file's tokens and
+# port over any additions (other than "backend").
+extends: existence
+message: "CORE-025: Don't use '%s'. See the Microsoft A-Z word list for details."
+link: https://learn.microsoft.com/en-us/style-guide
+ignorecase: true
+level: error
+tokens:
+  - abortion
+  - and so on
+  - app(?:lication)?s? (?:developer|program)
+  - app(?:lication)? file
+  - backbone
+  - contiguous selection
+  - fubar
+  - outdent(?:ing|ed|s)?

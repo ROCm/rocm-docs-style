@@ -4,13 +4,22 @@
 # a sentence (first word + proper nouns capitalized). The known limitation is
 # proper nouns: Vale only treats a fixed `exceptions` list as "legitimately
 # capitalized" words, so multi-word product names and unlisted proper nouns can
-# still trip it. The exceptions list below is seeded from the ROCm vocabulary.
+# still trip it.
+#
+# The proper nouns are NOT edited in this file. They are generated from
+# wordlists/heading-proper-nouns.txt, which is shared with CORE-008-MD.yml so
+# the Markdown and reStructuredText rules cannot drift apart. Edit that list,
+# then run `python scripts/sync-heading-exceptions.py`; CI fails if the two
+# are out of step. Names tagged `@md` in the list apply to Markdown only and
+# are not emitted here. The patterns after the generated block are maintained
+# by hand.
 extends: capitalization
 message: "CORE-008: Use sentence case for headings (capitalize only the first word and proper nouns)."
 level: error
 scope: heading
 match: $sentence
 exceptions:
+  # BEGIN GENERATED: heading proper nouns (from wordlists/heading-proper-nouns.txt; do not edit)
   - ROCm
   - HIP
   - AMD
@@ -21,20 +30,6 @@ exceptions:
   - CDNA
   - RDNA
   - HIPIFY
-  - Linux
-  - Windows
-  - NVIDIA
-  - CUDA
-  - PyTorch
-  - TensorFlow
-  - GPU
-  - GPUs
-  - CPU
-  - API
-  - APIs
-  - SDK
-  - Python
-  - AI
   - ROCProfiler
   - ROCprofiler-SDK
   - Streaming Performance Monitors
@@ -54,12 +49,9 @@ exceptions:
   - I/O
   - hipSPARSE
   - ROCm Core SDK
-  - LLM
   - Radeon
   - Instinct
   - Ryzen
-  # `+` is escaped below: unescaped, it breaks the generated regex (same
-  # issue that got C++ removed from this list).
   - Ryzen AI MAX / MAX\+ Series Processors
   - RDNA2
   - RDNA3
@@ -68,7 +60,6 @@ exceptions:
   - CDNA3
   - CDNA4
   - CDNA5
-  - LLVM
   - ASan
   - hipCUB
   - DeviceMerge
@@ -85,3 +76,84 @@ exceptions:
   - MIGraphX
   - Torch-MIGraphX
   - hipCIM
+  - Driver
+  - Pensando
+  - Pollara
+  - Lemonade
+  - Strix Point
+  - Strix Halo
+  - Gorgon Halo
+  - Krackan Point
+  - AMD Container Toolkit
+  - AMD Container Runtime Toolkit
+  - ROCm Runfile Installer
+  - Linux
+  - Windows
+  - NVIDIA
+  - CUDA
+  - PyTorch
+  - TensorFlow
+  - Python
+  - LLM
+  - LLVM
+  - Docker
+  - Dockerfile
+  - Docker Compose
+  - Ollama
+  - Dask
+  - Spack
+  - Hugging Face
+  - Ubuntu
+  - Debian
+  - Red Hat Enterprise Linux
+  - Kubernetes
+  - Jupyter
+  - Sphinx Design
+  - Read the Docs
+  - Visual Studio Code
+  - GitHub Discussions
+  - GPU
+  - GPUs
+  - CPU
+  - API
+  - APIs
+  - SDK
+  - AI
+  - January
+  - February
+  - March
+  - April
+  - May
+  - June
+  - July
+  - August
+  - September
+  - October
+  - November
+  - December
+  # END GENERATED
+  # Any word containing two or more capital letters is never a Title Case
+  # violation (that produces exactly one capital, at the start of a word), so
+  # it needs no per-name exception: all-caps acronyms (RDMA, NIC, CLI, PC),
+  # model numbers (MI300X), and camelCase/mixed-case product and tool names
+  # (XGBoost, CMake, WebUI, GitHub, MoRI). This mirrors the structural rule
+  # in CORE-008-MD.yml. Without it every such word in an .rst heading was a
+  # false positive.
+  #
+  # FRAGILE, do not "tidy" this pattern: how Vale prioritizes overlapping
+  # exceptions is sensitive to the pattern's shape. The obvious spelling
+  # `\w*[A-Z]\w*[A-Z]\w*` made it win over the listed phrase "ROCm Core SDK"
+  # and flagged "Core"; `[A-Z][A-Za-z0-9]*[A-Z][A-Za-z0-9]*` broke ten of the
+  # multi-word names above. This form passes them all. After changing the
+  # pattern or adding a short multi-word exception, rerun
+  # vale/testdata/core-008-rst-acronyms.rst, which includes each multi-word
+  # exception that has a word the pattern does not cover.
+  - '[A-Z]\w*[A-Z]\w*'
+  # Any word that starts with a lowercase letter. A heading such as an API
+  # identifier (`dynamic_dimension`, `parse_onnx`) is code, not a sentence,
+  # and cannot be a Title Case violation. The cost is that a heading that
+  # merely forgets to capitalize its first word ("getting started") is no
+  # longer caught here either; that judgment is left to the review tier.
+  # The leading \b matters: Vale matches exceptions as substrings, so without
+  # it this would match the tail of "Configuring" and exempt every heading.
+  - '\b[a-z]\w*'

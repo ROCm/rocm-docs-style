@@ -19,10 +19,21 @@
 # "Llama 70B") is not excluded and will still be flagged -- narrowing that
 # further risks swallowing genuine byte-count typos like "Buffer 20B".
 #
-# The kB/MB/GB/TB token and the time-unit token are untouched: neither
-# collides with LLM parameter-count naming (no ROCm docs use "20MB" or
-# similar to mean a parameter count), so they keep flagging real
-# missing-space issues (e.g., "20GB" -> "20 GB").
+# The kB/MB/GB/TB token doesn't collide with LLM parameter-count naming (no
+# ROCm docs use "20MB" or similar to mean a parameter count), so it keeps
+# flagging real missing-space issues (e.g., "20GB" -> "20 GB").
+#
+# The time-unit token's bare "s" gets a negative lookahead for a following
+# "t" at a word boundary, so the ordinal suffix "-st" ("1st", "21st", "31st")
+# is not read as "1s"/"21s" seconds. That collision made every such ordinal
+# double-report alongside Google.Ordinal. The guard is deliberately this
+# narrow rather than a blanket "no letter after the unit": a blanket guard
+# would also stop flagging genuine missing spaces such as "2days" or "3dB".
+# Every other ordinal suffix ("nd", "rd", "th") already fails to match
+# because the digits are not immediately followed by a unit.
+#
+# Known limitation, not fixed: "0s"/"1s" meaning zeros and ones (e.g. "fill
+# with 0s") is indistinguishable from a seconds value and still fires.
 extends: existence
 message: "CORE-020: Put a nonbreaking space between the number and the unit in '%s'."
 link: "https://developers.google.com/style/units-of-measure"
@@ -31,4 +42,4 @@ level: error
 tokens:
   - '\b\d+(?:kB|MB|GB|TB)'
   - '(?<!-)(?<!\d )\b\d+B\b'
-  - '\b\d+(?:ns|ms|s|min|h|d)'
+  - '\b\d+(?:ns|ms|s(?!t\b)|min|h|d)'

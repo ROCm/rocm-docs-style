@@ -1,0 +1,167 @@
+# Proper nouns that may be capitalized inside a heading.
+#
+# This is the single source of truth for the heading-case rules. Two rule files
+# are generated from it; do not edit the generated parts by hand:
+#
+#   vale/styles/ROCm/CORE-008.yml     (reStructuredText) - each line becomes
+#                                      one `exceptions:` entry
+#   vale/styles/ROCm/CORE-008-MD.yml  (Markdown)         - each line is split
+#                                      into words, and the plain Capitalized
+#                                      words become part of one regex
+#
+# After editing this file run:
+#
+#   python scripts/sync-heading-exceptions.py
+#
+# CI runs the same script with --check and fails if the rule files are stale.
+#
+# Format: one name per line. Blank lines and lines starting with "#" are
+# ignored. Write names as plain text; regex special characters are escaped by
+# the script.
+#
+# What belongs here, and what does not:
+#   - Add a proper noun that is a plain Capitalized Word, or a multi-word name
+#     containing one ("Docker", "Strix Halo", "Visual Studio Code").
+#   - Do NOT add acronyms, camelCase names, or model numbers ("GPU", "XGBoost",
+#     "MI300X"). Any word with two or more capitals is already exempt in both
+#     rules, so listing it is harmless but redundant.
+#   - Do NOT add ordinary section words ("Notes", "Guidelines", "Support").
+#     Those are the genuine Title Case violations the rule exists to catch.
+#
+# How a multi-word name is matched:
+#   - Markdown: each plain Capitalized word is exempt only where it sits inside
+#     the listed name. Listing "GitHub Issues" exempts "Issues" after "GitHub",
+#     but "Resolved Issues" is still flagged.
+#   - reStructuredText: the whole phrase is exempt, and nothing else.
+#
+# A name may end with " @md" to apply to Markdown only. Use it when the
+# reStructuredText rule mishandles a phrase that starts with a word containing
+# two or more capitals ("ROCr Runtime", "GitHub Issues"): Vale lets its
+# hand-written multi-capital pattern consume the first word, leaving the second
+# exposed. After adding such a name, check it as a whole reStructuredText
+# heading; see vale/testdata/core-008-rst-acronyms.rst.
+
+# --- ROCm and AMD products, libraries and tools ---
+ROCm
+HIP
+AMD
+AMD Instinct
+AMD Radeon
+AMD EPYC
+AMD Ryzen
+CDNA
+RDNA
+HIPIFY
+ROCProfiler
+ROCprofiler-SDK
+Streaming Performance Monitors
+SPM
+ROCprof Trace Decoder
+ROCprof Compute Viewer
+ROCm Compute Profiler
+ROCm Systems Profiler
+AMD SMI
+ROCm Data Center
+RDC
+Device Metrics Exporter
+DME
+ROCm Bandwidth Test
+RBT
+hipFile
+I/O
+hipSPARSE
+ROCm Core SDK
+Radeon
+Instinct
+Ryzen
+Ryzen AI MAX / MAX+ Series Processors
+RDNA2
+RDNA3
+RDNA4
+CDNA2
+CDNA3
+CDNA4
+CDNA5
+ASan
+hipCUB
+DeviceMerge
+Composable Kernel
+hipRAND
+rocSHMEM
+rocprofiler-compute
+rocprofiler-systems
+ROCr Debug Agent
+ROCR
+ROCm Data Center Tool
+ROCm Validation Suite
+TransferBench
+MIGraphX
+Torch-MIGraphX
+hipCIM
+Driver
+Pensando
+Pollara
+Lemonade
+Strix Point
+Strix Halo
+Gorgon Halo
+Krackan Point
+ROCr Runtime @md
+ROCR-Runtime @md
+AMD Container Toolkit
+AMD Container Runtime Toolkit
+MI200 Series @md
+MI300 Series @md
+MI350 Series @md
+ROCm Runfile Installer
+
+# --- Operating systems and general software ---
+Linux
+Windows
+NVIDIA
+CUDA
+PyTorch
+TensorFlow
+Python
+LLM
+LLVM
+Docker
+Dockerfile
+Docker Compose
+Ollama
+Dask
+Spack
+Hugging Face
+Ubuntu
+Debian
+Red Hat Enterprise Linux
+Kubernetes
+Jupyter
+Sphinx Design
+Read the Docs
+Visual Studio Code
+GitHub Discussions
+GitHub Issues @md
+
+# --- Abbreviations and terms that read as proper nouns ---
+GPU
+GPUs
+CPU
+API
+APIs
+SDK
+AI
+
+# --- Months (dates appear in release-note headings) ---
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December

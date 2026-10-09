@@ -1,0 +1,35 @@
+# CORE-026 — Filler intensifiers (supersedes Microsoft.Adverbs) (warning)
+#
+# Microsoft.Adverbs flags 264 adverbs and its own message hedges ("Remove X
+# if it's not important to the meaning"). That list is mostly manner and
+# frequency adverbs that carry real technical meaning in GPU/driver
+# documentation: "silently" (a failure that gives no error), "randomly"
+# (stochastic sampling), "gracefully" (degradation behavior), "separately",
+# "properly", "regularly". Flagging those told writers to delete information.
+#
+# This rule keeps only the pure intensifiers from that list, words that add
+# emphasis but no information. It is deliberately small.
+#
+# Not included on purpose:
+#   - "easily", "simply", "obviously": owned by ROCm.SPELL-009 (policy in
+#     rules/02-spelling-terminology.md). Listing them here too produced a
+#     second alert on the same span; keep this list disjoint from SPELL-009.
+#   - "seriously": meaning-bearing in phrases like "treat warnings seriously".
+#
+# MAINTENANCE: this is a manual subset of Microsoft.Adverbs
+# (vale/styles/Microsoft/Adverbs.yml). Do not add words here just because
+# Microsoft lists them; add a word only if it is a pure intensifier that
+# SPELL-009 does not already cover.
+extends: existence
+message: "CORE-026: Remove '%s' if it's not important to the meaning of the statement."
+link: https://learn.microsoft.com/en-us/style-guide/word-choice/use-simple-words-concise-sentences
+ignorecase: true
+level: warning
+action:
+  name: remove
+tokens:
+  - extremely
+  - fairly
+  - quite
+  - really
+  - very

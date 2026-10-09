@@ -22,18 +22,50 @@
 # match newlines, so this cannot leak into a later line's heading or into
 # ordinary prose. `\b` then anchors the match to a real word start, so an
 # exception like "ROCm" cannot be bypassed by matching mid-word (e.g. the
-# "O" in "ROCm"). The exceptions below are the same proper nouns as
-# CORE-008.yml's `exceptions:` list, but decomposed to individual words:
-# Vale's own multi-word `exceptions:` matching turned out to be unreliable
-# for 3+-word phrases in informal testing (e.g. "ROCm Validation Suite" as a
-# whole did not reliably suppress the alert), so each constituent word is
-# listed independently instead of relying on exact multi-word phrase
-# matching. This is intentionally permissive rather than strict — consistent
-# with CORE-008.yml's own documented preference to under-fire rather than
-# over-fire and protect reviewer trust.
+# "O" in "ROCm").
+#
+# What counts as a violation: only a plain Capitalized Word — one capital
+# followed by lowercase letters up to a word boundary (`[A-Z][a-z]+\b`), e.g.
+# "Settings" in "Configuring Network Settings". That is what Title Case
+# produces, and it is the only shape a sentence-case violation can take.
+# Tokens with a second capital or a digit in them can never be one, so they
+# need no exception and are ignored by construction: all-caps acronyms
+# ("RDMA", "NIC", "CLI", "(PC)"), camelCase/mixed-case product and tool names
+# ("XGBoost", "CMake", "WebUI", "GitHub", "MoRI", "ROCm"), and model numbers
+# ("MI300X"). An earlier version flagged any token starting with a capital
+# (`[A-Z]\S*`), which made every one of those a false positive and forced an
+# ever-growing exception list. The word list below therefore only has to name
+# proper nouns that are themselves plain Capitalized Words ("Docker",
+# "Ubuntu", "August", "Driver" in the product title "AMD GPU Driver").
+# Genuine section words ("Notes", "Guidelines", "Support") are deliberately
+# NOT listed; they are the true positives this rule exists to catch.
+#
+# The proper nouns are NOT edited in this file. The alternation between the
+# two inline regex comments in the token below (the BEGIN and END NOUNS
+# markers) is generated from
+# wordlists/heading-proper-nouns.txt, which is shared with CORE-008.yml so the
+# two rules cannot drift apart. Edit that list, then run
+# `python scripts/sync-heading-exceptions.py`; CI fails if they are out of
+# step. Only the plain Capitalized words are emitted, because no other token
+# shape can match this rule.
+#
+# A word inside a multi-word name is exempt only where it sits inside that name.
+# Each such word is emitted with lookarounds for the rest of the name, e.g.
+# `(?<=ROCm )Core(?= SDK)`, so listing "GitHub Issues" exempts "Issues" after
+# "GitHub" but still flags "Resolved Issues". An earlier version exempted each
+# constituent word everywhere (Vale's own multi-word `exceptions:` matching
+# was unreliable for 3+-word phrases, so words were listed independently), and
+# on real documentation that wrongly passed genuine Title Case headings such as
+# "Resolved Issues" and "Step 5: Test MIOpen Components". Single-word names
+# ("Docker") are exempt wherever they appear.
+#
+# Known limitation: this rule matches raw text, so a `#` comment line inside
+# a fenced code block is read as a heading. A lookbehind that tracks code
+# fences was tried and rejected: it was ~25x slower on a 300 KB file and
+# returned wrong results at that size. Such lines are rare in prose docs.
 extends: existence
 message: "CORE-008: Use sentence case for headings (capitalize only the first word and proper nouns)."
 level: error
 scope: raw
 tokens:
-  - '(?<=^#{1,6}[ \t]\S+[ \t]+.*)\b(?!(?:ROCm|HIP|AMD|CDNA|RDNA|HIPIFY|Linux|Windows|NVIDIA|CUDA|PyTorch|TensorFlow|GPUs|GPU|CPU|APIs|API|SDK|Python|AI|ROCProfiler|ROCprofiler-SDK|SPM|RDC|DME|RBT|hipFile|I/O|hipSPARSE|LLM|Radeon|Instinct|Ryzen|RDNA2|RDNA3|RDNA4|CDNA2|CDNA3|CDNA4|CDNA5|LLVM|ASan|hipCUB|DeviceMerge|hipRAND|rocSHMEM|rocprofiler-compute|rocprofiler-systems|ROCr|ROCR|TransferBench|MIGraphX|Torch-MIGraphX|EPYC|Streaming|Performance|Monitors|ROCprof|Trace|Decoder|Compute|Viewer|Profiler|Systems|SMI|Data|Center|Device|Metrics|Exporter|Bandwidth|Test|Core|MAX|Series|Processors|Debug|Agent|Tool|Validation|Suite|Composable|Kernel|hipCIM)\b)[A-Z]\S*'
+  - '(?<=^#{1,6}[ \t]\S+[ \t]+.*)\b(?!(?:(?#BEGIN-NOUNS)(?<=AMD )Instinct|(?<=AMD )Radeon|(?<=AMD )Ryzen|Streaming(?= Performance Monitors)|(?<=Streaming )Performance(?= Monitors)|(?<=Streaming Performance )Monitors|(?<=ROCprof )Trace(?= Decoder)|(?<=ROCprof Trace )Decoder|(?<=ROCprof )Compute(?= Viewer)|(?<=ROCprof Compute )Viewer|(?<=ROCm )Compute(?= Profiler)|(?<=ROCm Compute )Profiler|(?<=ROCm )Systems(?= Profiler)|(?<=ROCm Systems )Profiler|(?<=ROCm )Data(?= Center)|(?<=ROCm Data )Center|Device(?= Metrics Exporter)|(?<=Device )Metrics(?= Exporter)|(?<=Device Metrics )Exporter|(?<=ROCm )Bandwidth(?= Test)|(?<=ROCm Bandwidth )Test|(?<=ROCm )Core(?= SDK)|Radeon|Instinct|Ryzen|Ryzen(?= AI MAX / MAX\+ Series Processors)|(?<=Ryzen AI MAX / MAX\+ )Series(?= Processors)|(?<=Ryzen AI MAX / MAX\+ Series )Processors|Composable(?= Kernel)|(?<=Composable )Kernel|(?<=ROCr )Debug(?= Agent)|(?<=ROCr Debug )Agent|(?<=ROCm )Data(?= Center Tool)|(?<=ROCm Data )Center(?= Tool)|(?<=ROCm Data Center )Tool|(?<=ROCm )Validation(?= Suite)|(?<=ROCm Validation )Suite|Torch(?=-MIGraphX)|Driver|Pensando|Pollara|Lemonade|Strix(?= Point)|(?<=Strix )Point|Strix(?= Halo)|(?<=Strix )Halo|Gorgon(?= Halo)|(?<=Gorgon )Halo|Krackan(?= Point)|(?<=Krackan )Point|(?<=ROCr )Runtime|(?<=ROCR-)Runtime|(?<=AMD )Container(?= Toolkit)|(?<=AMD Container )Toolkit|(?<=AMD )Container(?= Runtime Toolkit)|(?<=AMD Container )Runtime(?= Toolkit)|(?<=AMD Container Runtime )Toolkit|(?<=MI200 )Series|(?<=MI300 )Series|(?<=MI350 )Series|(?<=ROCm )Runfile(?= Installer)|(?<=ROCm Runfile )Installer|Linux|Windows|Python|Docker|Dockerfile|Docker(?= Compose)|(?<=Docker )Compose|Ollama|Dask|Spack|Hugging(?= Face)|(?<=Hugging )Face|Ubuntu|Debian|Red(?= Hat Enterprise Linux)|(?<=Red )Hat(?= Enterprise Linux)|(?<=Red Hat )Enterprise(?= Linux)|(?<=Red Hat Enterprise )Linux|Kubernetes|Jupyter|Sphinx(?= Design)|(?<=Sphinx )Design|Read(?= the Docs)|(?<=Read the )Docs|Visual(?= Studio Code)|(?<=Visual )Studio(?= Code)|(?<=Visual Studio )Code|(?<=GitHub )Discussions|(?<=GitHub )Issues|January|February|March|April|May|June|July|August|September|October|November|December(?#END-NOUNS))\b)[A-Z][a-z]+\b'

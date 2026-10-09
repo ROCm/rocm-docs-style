@@ -6,12 +6,32 @@
 # because they contain uppercase: "I/O", "TCP/IP". The remaining lowercase
 # exception "client/server" is the only one this can over-fire on.
 # Code spans/blocks are skipped by Vale's Markdown/rST
-# scope, so file paths inside code are not flagged; bare paths in prose
-# (e.g. usr/bin) are a known limitation.
+# scope, so file paths inside code are not flagged.
+#
+# Absolute paths and filenames that appear outside code are skipped too, by two
+# guards around the token: it must not be preceded by a word character, "/",
+# "." or "-", and must not be followed by a word character or by the rest of a
+# path: an optional hyphenated tail, then any number of "/segment" parts, then
+# either a file extension (a "." plus a word character) or a trailing "/".
+# That excludes absolute paths ("/data/components.yaml", "/opt/rocm/bin", the
+# argument of an rST directive such as `.. datatemplate:yaml::` or a `:path:`
+# option), domain-qualified paths ("pytorch.org/get-started"), relative paths
+# that end in a file extension ("docs/index.rst", "docs/reference/api.md",
+# "docs/system-optimization/index.rst"), and directory paths with a trailing
+# slash ("data/reference/gpu-atomics-operation/"). Sentence-final punctuation
+# does not count as an extension, so "install/configure." is still flagged.
+#
+# Deliberately NOT guarded: a pair followed by another "/" or by "-word" with
+# no extension. A first version rejected both and thereby swallowed genuine
+# alternatives: "apt/dnf/zypper", "peer/host-memory" and "find/perf-database".
+# A relative path without a leading "/" and without an extension
+# ("usr/bin/env", "rocm/jax-community") is structurally the same as those, so it
+# can't be told apart and is still flagged. That is a known limitation; where it
+# is a real path, suppress it inline (see the README) or put it in a code span.
 extends: existence
 message: "CORE-003: Use 'and' or 'or' instead of a slash to join alternatives (exceptions: I/O, TCP/IP)."
 level: error
 nonword: true
 ignorecase: false
 tokens:
-  - '\b[a-z]{3,}/[a-z]{3,}\b'
+  - '(?<![\w/.-])[a-z]{3,}/[a-z]{3,}(?!\w|[\w-]*(?:/[\w-]+)*(?:\.\w|/(?![\w-])))'
