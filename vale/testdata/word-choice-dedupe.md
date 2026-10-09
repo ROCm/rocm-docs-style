@@ -2,8 +2,9 @@
 Regression fixture for word-choice rule overlap and conflicts. Run:
 `vale --config=vale/.vale.ini vale/testdata/word-choice-dedupe.md`
 
-Expected findings (anything else from these lines is a regression):
-  open-source line   -> exactly 1: ROCm.CORE-024        (was 2: + Google.WordListCase)
+Expected findings: exactly 3 in total (anything else from these lines is a regression):
+  open-source line   -> 0                               (was 2: CORE-024 + Google.WordListCase;
+                                                         the swap was then removed, SPELL-006 defers it)
   in order to line   -> exactly 1: ROCm.CORE-024        (was 2-3: + SPELL-009, WordListCase)
   backend line       -> 0                               (was 1 error: Microsoft.Avoid)
   CLI line           -> 0                               (was 1: CORE-024 CLI swap)

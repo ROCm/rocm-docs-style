@@ -146,26 +146,27 @@ list explain why.
 ### Suppressing a finding
 
 A rule can be correct in general and still wrong for one passage, for example
-`ROCm.CORE-022` on a protocol version such as `PKCS#1 v1.5`, or a product name
-that really is spelled in lowercase. Silence a single rule for just that
+`ROCm.CORE-003` on a container image name such as `rocm/jax-community`, which
+is shaped like "read/write", or a product name that really is spelled in
+lowercase. Silence a single rule for just that
 passage with an inline Vale comment, and turn it back on afterwards.
 
 In Markdown:
 
 ```md
-<!-- vale ROCm.CORE-022 = NO -->
-The signature uses PKCS#1 v1.5 padding.
-<!-- vale ROCm.CORE-022 = YES -->
+<!-- vale ROCm.CORE-003 = NO -->
+Pull rocm/jax-community from the registry.
+<!-- vale ROCm.CORE-003 = YES -->
 ```
 
 In reStructuredText:
 
 ```rst
-.. vale ROCm.CORE-022 = NO
+.. vale ROCm.CORE-003 = NO
 
-The signature uses PKCS#1 v1.5 padding.
+Pull rocm/jax-community from the registry.
 
-.. vale ROCm.CORE-022 = YES
+.. vale ROCm.CORE-003 = YES
 ```
 
 `<!-- vale off -->` / `<!-- vale on -->` (and `.. vale off` / `.. vale on`)
@@ -199,6 +200,12 @@ demonstrably broader, Google is disabled instead:
 | `Microsoft.Avoid` | `ROCm.CORE-025` | Microsoft lists "backend" as a word to avoid, but "backend" is the preferred form in ROCm documentation. `ROCm.CORE-025` is the same list minus "backend". |
 | `Microsoft.Adverbs` | `ROCm.CORE-026` | A stock list of 264 adverbs, most of which carry technical meaning here ("silently", "randomly", "gracefully"). `ROCm.CORE-026` keeps only the pure intensifiers. |
 | `Google.Will` | *(none — left to the LLM review tier)* | Matches the bare word "will" with no sense disambiguation, so it cannot tell a genuine future event from a present-tense candidate. |
+| `Microsoft.UIVerbs` | *(none — left to the LLM review tier)* | Asks for "select" instead of "click" everywhere, although a literal mouse click is fine; the sentence must be read to tell. |
+| `Microsoft.GeneralURL` | *(none)* | Asks for "address" instead of "URL" for a general audience; this docs set is written for technical readers. |
+| `Microsoft.Terms` | *(none)* | Prefers "numeric" over "numerical"; the two are not interchangeable. |
+| `Microsoft.Suspended` | *(none)* | Flags "pre- and post-"; no ROCm rule asks for this. |
+| `Vale.Repetition` | *(none)* | Built in and untunable; almost every hit was a repeated name or version number. A real typo such as "the the" is no longer caught mechanically. |
+| `ROCm.CORE-022` | *(none — suspended)* | Standard names such as "Inception v3" and "PKCS#1 v1.5" use a `v` prefix. The rule file is kept so it can be re-enabled. |
 | `Google.Acronyms`, `Microsoft.Acronyms` | `ROCm.CORE-018` | `ROCm.CORE-018` supersedes both with ROCm/AMD-aware detection logic (extended acronym exceptions). |
 | `Google.Units` | `ROCm.CORE-020` | `ROCm.CORE-020` supersedes it with unit-of-measure handling that also accounts for LLM model-name parameter-count suffixes. |
 | `Google.Colons` | *(none — pending decision)* | Was superseded by `ROCm.CORE-019`, now removed (it enforced guidance the current ROCm style guide no longer states, and contradicted the guide's "Description lists" section). Left disabled rather than re-enabled: `Google.Colons`'s own behavior is likely just as wrong against the current guide. |
@@ -207,21 +214,24 @@ demonstrably broader, Google is disabled instead:
 | `Google.Contractions` | `Microsoft.Contractions` | Microsoft covers the same substitution list, plus a reverse contracted→expanded swap before end punctuation, avoiding an awkward contraction at a sentence boundary. |
 | `Google.EmDash` | `Microsoft.Dashes` | Microsoft matches the same two-sided-space defect, plus one-sided spacing around the dash, which Google's regex misses. |
 | `Google.FirstPerson` | `Microsoft.FirstPerson` | Microsoft matches the same tokens, plus the contracted forms I'd/I'll/I've. |
-| `Google.Latin` | `Microsoft.Foreign` | Microsoft covers the same e.g./i.e. substitutions, plus viz./ergo. |
+| `Google.Latin` | *(none — `Microsoft.Foreign` is also disabled)* | Microsoft covered the same e.g./i.e. substitutions plus viz./ergo, but "e.g." and "i.e." are allowed in this docs set, so neither check runs. |
 | `Google.HeadingPunctuation` | `Microsoft.HeadingPunctuation` | Microsoft flags the same trailing-period case, plus trailing `?`/`!` in headings. |
 | `Google.OptionalPlurals` | `Microsoft.Plurals` | Microsoft flags the same "(s)" case, plus "(es)". |
-| `Google.Quotes` | `Microsoft.Quotes` | Microsoft flags the same straight-quote case, plus curly/smart quotes. |
+| `Google.Quotes` | *(none — `Microsoft.Quotes` is also disabled)* | Technical documentation quotes exactly what is typed, so neither punctuation-inside-quotes check runs. |
 | `Microsoft.AMPM` | `Google.AMPM` | Functionally identical. |
 | `Microsoft.DateFormat`, `Microsoft.DateOrder` | `Google.DateFormat` | Google covers two malformed-date shapes; Microsoft's only edge (2-digit years) doesn't outweigh that broader coverage. |
 | `Microsoft.Ellipses` | `Google.Ellipses` | Byte-identical. |
 | `Microsoft.Gender` | `Google.Gender` | Google has an extra token, `(s)he`. |
 | `Microsoft.GenderBias` | `Google.GenderBias` | Near-identical; Google's "mankind" replacement offers an extra alternative. |
-| `Microsoft.Hyphens` | `Google.LyHyphens` | Identical regex/action; only severity/link differ. |
+| `Microsoft.Hyphens` | *(none — `Google.LyHyphens` is also disabled)* | The two were identical. `Google.LyHyphens` flags any word ending in "-ly", such as "multiply-add", so neither runs. |
 | `Microsoft.OxfordComma` | `Google.OxfordComma` | Google's regex is looser (no sentence-final-punctuation requirement), so it catches more instances. |
 | `Microsoft.Passive` | `Google.Passive` | Byte-identical. |
 | `Microsoft.Semicolon` | `Google.Semicolons` | Identical trigger, same level. |
 | `Microsoft.Spacing` | `Google.Spacing` | Byte-identical. |
 | `Microsoft.We` | `Google.We` | Byte-identical. |
+
+Every check that is switched off, and whether the LLM review tier is expected to
+cover it, is listed in [rules/09-suspended-and-delegated.md](rules/09-suspended-and-delegated.md).
 
 `Microsoft.Contractions` is intentionally left enabled: contractions are
 established ROCm style, including in headings.

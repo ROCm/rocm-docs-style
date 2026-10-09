@@ -32,14 +32,26 @@
 # Every other ordinal suffix ("nd", "rd", "th") already fails to match
 # because the digits are not immediately followed by a unit.
 #
+# Identifiers and decimal parameter counts are skipped as well:
+#   - A trailing "_" ends the match, so "2d_regression" and "3d_segmentation"
+#     (tutorial and file names) are not read as "2 d"/"3 d" days. Only the
+#     underscore is guarded; "2days" still fires, because a blanket "no letter
+#     after the unit" guard would also hide genuine missing spaces.
+#   - A bare "B" preceded by "." is a decimal parameter count ("2.7B", "6.7B"),
+#     the same shape as the hyphen case above.
+#
+# Severity is warning, not error. Whether "32GB" or "32 GB" is written is a
+# house-style preference that writers cannot see in Markdown (the nonbreaking
+# space is invisible), so it should not fail a build.
+#
 # Known limitation, not fixed: "0s"/"1s" meaning zeros and ones (e.g. "fill
 # with 0s") is indistinguishable from a seconds value and still fires.
 extends: existence
 message: "CORE-020: Put a nonbreaking space between the number and the unit in '%s'."
 link: "https://developers.google.com/style/units-of-measure"
 nonword: true
-level: error
+level: warning
 tokens:
   - '\b\d+(?:kB|MB|GB|TB)'
-  - '(?<!-)(?<!\d )\b\d+B\b'
-  - '\b\d+(?:ns|ms|s(?!t\b)|min|h|d)'
+  - '(?<![-.])(?<!\d )\b\d+B\b'
+  - '\b\d+(?:ns|ms|s(?!t\b)|min|h|d)(?!_)'

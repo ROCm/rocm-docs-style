@@ -17,6 +17,18 @@
 #     "overview screen", "tap & hold", "long press", "tablet",
 #     "cell/smart phone", "cellular data/network", and "touch: tap"). The last
 #     of those flagged every ordinary use of the word "touch".
+#   - "above: preceding": the ROCm guide itself writes "listed above" in a
+#     Right example (rules/03-structure-landing.md), so the swap contradicts it
+#     and is often worse than "above" next to a figure.
+#   - "open-source: open source": whether the compound is hyphenated depends
+#     on whether it is an adjective, and SPELL-006 defers that to human
+#     judgment, so a mechanical swap contradicts it.
+#   - "functionality: capability|feature" and "abort" (from the
+#     "kill|terminate|abort" entry; "kill" and "terminate" stay): ordinary
+#     technical terms whose replacement changes the meaning (a firmware
+#     dependency is not a "feature"; "abort" names a specific GPU fault).
+#   - "SHA1: SHA-1|HAS-SHA1": the replacement "HAS-SHA1" is an upstream typo,
+#     and a git commit's SHA1 is an identifier, not the algorithm name.
 # Everything else is copied verbatim from Google.WordList.
 #
 # MAINTENANCE: this is a manual fork, not a live reference. Google.WordList
@@ -36,13 +48,12 @@ action:
 swap:
   "(?:e-mail|Email|E-mail)": email
   "(?:file ?path|path ?name)": path
-  "(?:kill|terminate|abort)": stop|exit|cancel|end
+  "(?:kill|terminate)": stop|exit|cancel|end
   "(?:OAuth ?2|Oauth)": OAuth 2.0
   "(?:ok|Okay)": OK|okay
   "(?:WiFi|wifi)": Wi-Fi
   '3\-D': 3D
   "un(?:check|select)": clear
-  above: preceding
   account name: username
   admin: administrator
   Ajax: AJAX
@@ -58,15 +69,12 @@ swap:
   data are: data is
   fewer data: less data
   file name: filename
-  functionality: capability|feature
   grayed-out: unavailable
   HTTPs: HTTPS
   in order to: to
   ingest: import|load
   k8s: Kubernetes
-  open-source: open source
   regex: regular expression
-  SHA1: SHA-1|HAS-SHA1
   sign into: sign in to
   sign-?on: single sign-on
   stylesheet: style sheet
