@@ -146,6 +146,7 @@ Getting Started With ROCm On Linux
 Getting started with ROCm on Linux
 ===================================
 ```
+**Note:** The automated check does not flag the following in a heading, because none of them can be a Title Case violation: words with two or more capital letters (acronyms such as `RDMA`, camelCase names such as `XGBoost`, model numbers such as `MI300X`), proper nouns listed in `wordlists/heading-proper-nouns.txt`, and in reStructuredText any word that starts with a lowercase letter (an API identifier such as `dynamic_dimension`). A reStructuredText heading that merely forgets to capitalize its first word is therefore not caught mechanically; that judgment belongs to the review tier. Implemented as `vale/styles/ROCm/CORE-008.yml` (reStructuredText) and `CORE-008-MD.yml` (Markdown), whose proper-noun lists are generated from the shared word list.
 **Source:** ROCm custom
 
 ---
@@ -548,3 +549,56 @@ CUDA 12.0 is required.
 (The same convention applies in rST: rST inline strong emphasis also uses `**text**`, so the wrong/right forms above are unchanged.)
 **Note:** CORE-019 (a general colon-capitalization rule) has been removed — it enforced guidance the current ROCm style guide no longer states, and directly contradicted the guide's "Description lists" section, which requires capitalizing the first word of each description. Implemented in Vale as `vale/styles/ROCm/CORE-023.yml`, an `existence` rule matching the malformed bold-term/colon patterns.
 **Source:** ROCm custom
+
+---
+
+### Rule: CORE-024
+**Severity:** warning
+**Scope:** All documentation — word choice
+**Rule:** Use the preferred word or phrase from the substitution list instead of the discouraged one. The list is derived from the Google developer documentation word list, trimmed to entries that suit ROCm documentation. Examples: "open source" (not "open-source"), "to" (not "in order to"), "preceding" (not "above"), "capability" or "feature" (not "functionality"), "checkbox" (not "check box"), "URL" (not "url").
+**Wrong:**
+```md
+This plugin is open-source and supported.
+Cache the result in order to speed up later runs.
+```
+**Right:**
+```md
+This plugin is open source and supported.
+Cache the result to speed up later runs.
+```
+**Note:** Entries that only exist to serve Google's own products and platforms (Google Cloud Platform terminology, Android and mobile UI terms, Google account names) are not part of this rule, and neither is the `CLI` to "command-line tool" swap, because it is wrong for the ROCm CLI product name. The complete list is in `vale/styles/ROCm/CORE-024.yml`; it replaces the `Google.WordList` and `Google.WordListCase` checks.
+**Source:** ROCm custom, Google word list
+
+---
+
+### Rule: CORE-025
+**Severity:** error
+**Scope:** All documentation — words to avoid
+**Rule:** Do not use the following words and phrases: "and so on", "abortion", "backbone", "contiguous selection", "fubar", "outdent" (and "outdenting", "outdented"), "app developer", "application developer", "app program", "application program", "app file" and "application file". These are the entries of the Microsoft A-Z word list that the underlying check enforces, minus "backend" (see the note below).
+**Wrong:**
+```md
+Install the compiler, the runtime, and so on.
+```
+**Right:**
+```md
+Install the compiler and the runtime.
+```
+**Note:** "backend" is deliberately **not** on this list. It is the preferred compound form in ROCm documentation (see the compound-word rules in `02-spelling-terminology.md`; "back-end" and "back end" are the discouraged forms). The underlying Microsoft check lists "backend" as a word to avoid, which contradicts ROCm policy, so it is disabled and this rule replaces it. Implemented in `vale/styles/ROCm/CORE-025.yml`.
+**Source:** ROCm custom, Microsoft A-Z word list
+
+---
+
+### Rule: CORE-026
+**Severity:** warning
+**Scope:** All documentation — filler intensifiers
+**Rule:** Remove "very", "quite", "really", "extremely" and "fairly" when they add emphasis but no information.
+**Wrong:**
+```md
+The result is very fast.
+```
+**Right:**
+```md
+The result is fast.
+```
+**Note:** This deliberately covers only pure intensifiers. Manner and frequency adverbs that carry technical meaning, such as "silently" (a failure that reports no error), "randomly" (stochastic behavior) or "gracefully" (degradation behavior), are not flagged. "easily", "simply" and "obviously" are covered by the ambiguous-words rule instead. Implemented in `vale/styles/ROCm/CORE-026.yml`; it replaces the broader `Microsoft.Adverbs` check.
+**Source:** ROCm custom, Microsoft Writing Style Guide

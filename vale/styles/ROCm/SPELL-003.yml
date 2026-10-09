@@ -7,37 +7,53 @@
 # Vale.Terms check — this swap list is the sole enforcement mechanism.
 # nonword + case-sensitive matching: only the wrong casings below match; the
 # correct casing (e.g. rocBLAS) is left untouched.
-# Negative lookahead on the ROCm key excludes kebab-case repo/package slugs
-# (e.g. "rocm-examples"), which are literal GitHub identifiers conventionally
-# written all-lowercase and are not a miscasing of the ROCm brand name.
-# Negative lookahead on the rocprofiler key excludes "rocprofiler-compute" and
-# "rocprofiler-systems" — the package names for ROCm Compute Profiler and
-# ROCm Systems Profiler. These are distinct tools from ROCProfiler (the
-# profiling library), so they are not a miscasing that needs correcting.
-# The ASAN and ROCPD keys use letter-boundary lookaround (rather than bare
-# substitution) because both are short substrings of unrelated real words:
-# ASAN is the tail of "KASAN" (Kernel AddressSanitizer), and a bare match
-# would also clip the start of unrelated words. The lookaround keeps the
-# match confined to the whole token.
+#
+# Every key is wrapped in the same boundary guard, so a name only matches when
+# it stands alone as a word in prose:
+#
+#   leading   (?<![\w/.-])      not preceded by a word character, "/", "." or "-"
+#   trailing  (?![\w/]|[-.]\w)  not followed by a word character, "/", or a
+#                               "-"/"." that continues into another word
+#
+# This keeps the rule off things that are literal identifiers rather than a
+# miscasing of the brand name:
+#   - a longer product name that merely contains the key: "HIPBLASLt" is
+#     hipBLASLt, a distinct library, not "hipBLAS" miscased
+#   - kebab-case repo/package/tool slugs: "rocm-examples", "migraphx-driver",
+#     "rocprofiler-compute", "rocprofiler-systems" (the last two are the
+#     package names for ROCm Compute Profiler and ROCm Systems Profiler,
+#     distinct from the ROCProfiler library). The old per-key lookaheads for
+#     these are subsumed by the shared trailing guard
+#   - environment variables: "ROCM_PATH", "MIGRAPHX_SET_GEMM_PROVIDER",
+#     "ASAN_OPTIONS"
+#   - path segments, filenames, and domains: "/opt/rocm/bin", "rocm/",
+#     "rocm.conf", "docs.rocm.com"
+# A name followed by sentence punctuation or a space still matches, so a real
+# miscasing such as "tested with rocm 6.0" or "build migraphx." is still caught.
+#
+# The ASAN and ROCPD keys previously used a letter-only boundary because both
+# are short substrings of unrelated real words (ASAN is the tail of "KASAN",
+# Kernel AddressSanitizer). The shared guard covers that too (a preceding "K"
+# is a word character) and additionally skips "ASAN_OPTIONS".
 extends: substitution
 message: "SPELL-003: Use the exact ROCm name casing '%s' instead of '%s'."
 level: error
 ignorecase: false
 nonword: true
 swap:
-  '(?:ROCM|rocm|Rocm)(?!-[a-z0-9])': ROCm
-  '(?:HipBLAS|HIPBLAS|hipblas)': hipBLAS
-  '(?:RocBLAS|ROCBLAS|rocblas)': rocBLAS
-  '(?:miopen|MIOPEN|Miopen)': MIOpen
-  '(?:RocFFT|ROCFFT|rocfft)': rocFFT
-  '(?:HipSPARSE|hipsparse)': hipSPARSE
-  '(?:RocSOLVER|rocsolver)': rocSOLVER
-  '(?:migraphx|MIGRAPHX)': MIGraphX
-  '(?:rocprofiler|ROCPROFILER)(?!-(?:compute|systems))': ROCProfiler
-  '(?:RocPRIM|rocprim)': rocPRIM
-  '(?:RocRAND|rocrand)': rocRAND
-  '(?:RocThrust|rocthrust)': rocThrust
-  '(?:rocalution|ROCALUTION)': rocALUTION
-  '(?:VLLM|Vllm)': vLLM
-  '(?<![A-Za-z])(?:ASAN)(?![A-Za-z])': ASan
-  '(?<![A-Za-z])(?:ROCPD|ROCpd)(?![A-Za-z])': rocpd
+  '(?<![\w/.-])(?:ROCM|rocm|Rocm)(?![\w/]|[-.]\w)': ROCm
+  '(?<![\w/.-])(?:HipBLAS|HIPBLAS|hipblas)(?![\w/]|[-.]\w)': hipBLAS
+  '(?<![\w/.-])(?:RocBLAS|ROCBLAS|rocblas)(?![\w/]|[-.]\w)': rocBLAS
+  '(?<![\w/.-])(?:miopen|MIOPEN|Miopen)(?![\w/]|[-.]\w)': MIOpen
+  '(?<![\w/.-])(?:RocFFT|ROCFFT|rocfft)(?![\w/]|[-.]\w)': rocFFT
+  '(?<![\w/.-])(?:HipSPARSE|hipsparse)(?![\w/]|[-.]\w)': hipSPARSE
+  '(?<![\w/.-])(?:RocSOLVER|rocsolver)(?![\w/]|[-.]\w)': rocSOLVER
+  '(?<![\w/.-])(?:migraphx|MIGRAPHX)(?![\w/]|[-.]\w)': MIGraphX
+  '(?<![\w/.-])(?:rocprofiler|ROCPROFILER)(?![\w/]|[-.]\w)': ROCProfiler
+  '(?<![\w/.-])(?:RocPRIM|rocprim)(?![\w/]|[-.]\w)': rocPRIM
+  '(?<![\w/.-])(?:RocRAND|rocrand)(?![\w/]|[-.]\w)': rocRAND
+  '(?<![\w/.-])(?:RocThrust|rocthrust)(?![\w/]|[-.]\w)': rocThrust
+  '(?<![\w/.-])(?:rocalution|ROCALUTION)(?![\w/]|[-.]\w)': rocALUTION
+  '(?<![\w/.-])(?:VLLM|Vllm)(?![\w/]|[-.]\w)': vLLM
+  '(?<![\w/.-])ASAN(?![\w/]|[-.]\w)': ASan
+  '(?<![\w/.-])(?:ROCPD|ROCpd)(?![\w/]|[-.]\w)': rocpd

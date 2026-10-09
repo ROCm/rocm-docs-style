@@ -7,6 +7,15 @@
 # "first", "only") are intentionally left out of this mechanical check.
 # Several entries here overlap Google.Will/Google.Acronyms etc.; the ROCm rule is
 # emitted first per BasedOnStyles ordering.
+#
+# "in order to" is intentionally NOT listed: ROCm.CORE-024 already owns that
+# substitution ("in order to" -> "to") and reports it with the replacement, so
+# listing it here too produced a second alert on the identical span.
+#
+# Note: the `e.g.` and `i.e.` tokens below do not currently match anything.
+# With `nonword: false` Vale wraps each token in `\b`, and a word boundary
+# can't follow a trailing ".". Microsoft.Foreign is what actually flags those
+# two, so they are left in place as documentation of the policy.
 extends: existence
 message: "'%s' is discouraged — see the Google word list for a clearer alternative."
 level: warning
@@ -28,5 +37,4 @@ tokens:
   - easily
   - easy
   - obviously
-  - 'in order to'
   - utilize

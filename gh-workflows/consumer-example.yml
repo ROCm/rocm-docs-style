@@ -5,7 +5,8 @@
 #   2. Check out the rocm-docs-style repo (the rules).
 #   3. Download the latest Vale.
 #   4. Sync the Google + Microsoft style packages.
-#   5. Run the Vale check on the PR's changed files only.
+#   5. Run the Vale check on the PR's changed Markdown and reStructuredText
+#      files under docs/ only (see the pathspec in the last step to change that).
 
 name: rocm-docs-style-check
 
@@ -53,11 +54,19 @@ jobs:
           # If you change that `path:`, update this `cd` to match.
           cd docs-repo
           BASE="${{ github.event.pull_request.base.sha }}"
-          # Add your own ':(exclude)...' pathspecs here if this repo has
-          # meta-docs (e.g. README.md, CONTRIBUTING.md, SECURITY.md) that you
-          # don't want held to the ROCm style guide — that's your call to make,
-          # not this template's.
-          FILES=$(git diff --name-only --diff-filter=ACM "$BASE" -- '*.md' '*.rst' || true)
+          # Only files under docs/ are linted by default (the plain pathspec's
+          # '*' also matches across subdirectories, so docs/a/b.md is included).
+          # Repo-level files such as CODE_OF_CONDUCT.md, issue and PR templates,
+          # and third-party changelogs are intentionally NOT linted: they use a
+          # different voice ("we", "please") that the style guide forbids in
+          # product documentation, and in the first scan of whole repos they
+          # produced roughly four in five of all alerts.
+          #
+          # If this repo's documentation lives elsewhere, add or change the
+          # paths below, for example: -- 'docs/*.md' 'docs/*.rst' 'README.md'
+          # To keep part of docs/ out of the check, add a pathspec such as
+          # ':(exclude)docs/generated/*'.
+          FILES=$(git diff --name-only --diff-filter=ACM "$BASE" -- 'docs/*.md' 'docs/*.rst' || true)
           if [ -z "$FILES" ]; then
             echo "No changed docs to lint."
             exit 0
