@@ -34,6 +34,12 @@ jobs:
           fetch-depth: 0          # needed to diff against the base branch
           persist-credentials: false
 
+      - name: Check the heading exception lists are in sync
+        # CORE-008.yml and CORE-008-MD.yml are generated from
+        # wordlists/heading-proper-nouns.txt. This fails if someone edits one
+        # side by hand, or edits the list without regenerating.
+        run: python3 scripts/sync-heading-exceptions.py --check
+
       - name: Install Vale (latest)
         run: |
           curl -sS -H "Authorization: Bearer ${{ github.token }}" \
@@ -66,9 +72,18 @@ jobs:
           #                           might show up nested somewhere — those would
           #                           be real authored docs and should still be
           #                           linted.
+          #   - vale/testdata/**    — regression fixtures for the rules. They
+          #                           contain deliberate violations (including
+          #                           error-level ones) so each rule can be shown
+          #                           to fire, or not fire, on a known input;
+          #                           linting them would fail every PR that
+          #                           touches one. Each fixture's header comment
+          #                           states the findings it is expected to
+          #                           produce.
           FILES=$(git diff --name-only --diff-filter=ACM "$BASE" -- '*.md' '*.rst' \
             ':(exclude)rules/**' \
-            ':(exclude)README.md' ':(exclude)CONTRIBUTING.md' ':(exclude)SECURITY.md' || true)
+            ':(exclude)README.md' ':(exclude)CONTRIBUTING.md' ':(exclude)SECURITY.md' \
+            ':(exclude)vale/testdata/**' || true)
           if [ -z "$FILES" ]; then
             echo "No changed Markdown or reStructuredText to lint."
             exit 0

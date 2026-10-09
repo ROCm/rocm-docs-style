@@ -101,13 +101,76 @@ The workflow:
 2. Checks out this repository (the style rules).
 3. Downloads the latest Vale release.
 4. Runs `vale sync` to fetch the Google and Microsoft packages.
-5. Runs Vale, scoped to only the `.md` and `.rst` files the PR changed
-   (diffed against the PR's base commit) — it does not lint the whole repo on
-   every PR.
+5. Runs Vale, scoped to only the `.md` and `.rst` files under `docs/` that the
+   PR changed (diffed against the PR's base commit) — it does not lint the
+   whole repo on every PR.
+
+Repo-level files such as `CODE_OF_CONDUCT.md`, issue and PR templates, and
+third-party changelogs are left out by default. They are written in a
+different voice (for example "we" and "please") that the style guide forbids in
+product documentation, and when the rules were first run over whole
+repositories they produced roughly four in five of all alerts. If your
+documentation lives somewhere other than `docs/`, change the pathspec in the
+template's last step; the comment there shows how to add paths or exclude
+parts of `docs/`.
 
 It runs entirely on GitHub-hosted runners and requires no secrets or external
 services. Adjust the checkout path in the workflow if your repository layout
 differs from the template's assumptions.
+
+### Adding a proper noun that may be capitalized in headings
+
+Heading case is checked by two rules (`ROCm.CORE-008` for reStructuredText,
+`ROCm.CORE-008-MD` for Markdown) that share one list of exempt proper nouns:
+[wordlists/heading-proper-nouns.txt](wordlists/heading-proper-nouns.txt). To
+exempt a new name:
+
+1. Add it to that file, one name per line.
+2. Run `python scripts/sync-heading-exceptions.py`. This regenerates the
+   exception lists inside both rule files; do not edit those by hand.
+3. Commit the list and both regenerated rule files together.
+
+The `self-check` workflow runs the script with `--check` and fails if the rule
+files are out of step with the list.
+
+Only add names that are proper nouns and plain Capitalized Words (or contain
+one), such as `Docker` or `Strix Halo`. Acronyms, camelCase names and model
+numbers (`GPU`, `XGBoost`, `MI300X`) and headings that begin with a lowercase
+letter (API identifiers such as `dynamic_dimension`) are already exempt. A
+multi-word name is exempt only as that name: listing `GitHub Issues` does not
+exempt `Resolved Issues`. If a name that starts with a multi-capital word
+(such as `ROCr Runtime`) fails as a whole reStructuredText heading, end its
+line with ` @md` to apply it to Markdown only; the comments at the top of the
+list explain why.
+
+### Suppressing a finding
+
+A rule can be correct in general and still wrong for one passage, for example
+`ROCm.CORE-022` on a protocol version such as `PKCS#1 v1.5`, or a product name
+that really is spelled in lowercase. Silence a single rule for just that
+passage with an inline Vale comment, and turn it back on afterwards.
+
+In Markdown:
+
+```md
+<!-- vale ROCm.CORE-022 = NO -->
+The signature uses PKCS#1 v1.5 padding.
+<!-- vale ROCm.CORE-022 = YES -->
+```
+
+In reStructuredText:
+
+```rst
+.. vale ROCm.CORE-022 = NO
+
+The signature uses PKCS#1 v1.5 padding.
+
+.. vale ROCm.CORE-022 = YES
+```
+
+`<!-- vale off -->` / `<!-- vale on -->` (and `.. vale off` / `.. vale on`)
+turn off every rule for the enclosed passage. Prefer the single-rule form, so
+the rest of the style guide still applies.
 
 ## Configuration
 
@@ -118,8 +181,10 @@ the repository root. Key points:
   resolved relative to the `.vale.ini` file.
 - `MinAlertLevel = warning` — only `warning`- and `error`-level findings are
   reported; low-severity suggestions are not.
-- `BasedOnStyles = Vale, Google, Microsoft, ROCm` — applied to all `.md`
-  files.
+- `BasedOnStyles = Vale, Google, Microsoft, ROCm` — applied to all `.md` and
+  `.rst` files. The two formats share one rule set, except that Markdown
+  headings are checked by `ROCm.CORE-008-MD` and reStructuredText headings by
+  `ROCm.CORE-008`.
 
 Where a Google check and a Microsoft check cover the same topic, the less
 extensive one is disabled — ties and cases where Google is broader default to
@@ -129,7 +194,11 @@ demonstrably broader, Google is disabled instead:
 | Disabled check | Kept instead | Why |
 |---|---|---|
 | `Vale.Spelling` | `ROCm.SPELL-*` | ROCm/AMD product and library names (e.g. ROCm, hipBLAS, MIOpen) aren't in standard dictionaries, and this repo doesn't ship a custom spelling vocabulary. Casing and spelling of these names is enforced by the `ROCm.SPELL-*` rules instead. |
-| `Google.Headings`, `Microsoft.Headings` | `ROCm.CORE-008` | `ROCm.CORE-008` owns sentence-case heading capitalization, with its own exceptions list for product and library names. |
+| `Google.Headings`, `Microsoft.Headings` | `ROCm.CORE-008` (`.rst`), `ROCm.CORE-008-MD` (`.md`) | `ROCm.CORE-008` owns sentence-case heading capitalization, with its own exceptions list for product and library names. Words with two or more capitals (acronyms, camelCase names, model numbers) are never flagged. |
+| `Google.WordList`, `Google.WordListCase` | `ROCm.CORE-024` | `ROCm.CORE-024` is a trimmed fork of Google's word list that drops the entries serving only Google's own products, and the `CLI` entry. `Google.WordListCase` is the case-insensitive twin of `Google.WordList`; leaving it on reported every `ROCm.CORE-024` alert a second time on the same span. |
+| `Microsoft.Avoid` | `ROCm.CORE-025` | Microsoft lists "backend" as a word to avoid, but "backend" is the preferred form in ROCm documentation. `ROCm.CORE-025` is the same list minus "backend". |
+| `Microsoft.Adverbs` | `ROCm.CORE-026` | A stock list of 264 adverbs, most of which carry technical meaning here ("silently", "randomly", "gracefully"). `ROCm.CORE-026` keeps only the pure intensifiers. |
+| `Google.Will` | *(none — left to the LLM review tier)* | Matches the bare word "will" with no sense disambiguation, so it cannot tell a genuine future event from a present-tense candidate. |
 | `Google.Acronyms`, `Microsoft.Acronyms` | `ROCm.CORE-018` | `ROCm.CORE-018` supersedes both with ROCm/AMD-aware detection logic (extended acronym exceptions). |
 | `Google.Units` | `ROCm.CORE-020` | `ROCm.CORE-020` supersedes it with unit-of-measure handling that also accounts for LLM model-name parameter-count suffixes. |
 | `Google.Colons` | *(none — pending decision)* | Was superseded by `ROCm.CORE-019`, now removed (it enforced guidance the current ROCm style guide no longer states, and contradicted the guide's "Description lists" section). Left disabled rather than re-enabled: `Google.Colons`'s own behavior is likely just as wrong against the current guide. |
@@ -154,6 +223,9 @@ demonstrably broader, Google is disabled instead:
 | `Microsoft.Spacing` | `Google.Spacing` | Byte-identical. |
 | `Microsoft.We` | `Google.We` | Byte-identical. |
 
+`Microsoft.Contractions` is intentionally left enabled: contractions are
+established ROCm style, including in headings.
+
 Contextual and stylistic judgment calls that no mechanical rule above can
 resolve — such as whether an unlisted proper noun is legitimately capitalized
 in a heading, or overall tone — should be handled by a separate LLM-based review
@@ -166,7 +238,9 @@ tier or a human, not by Vale.
 | [vale/.vale.ini](vale/.vale.ini) | Vale configuration |
 | [vale/styles/ROCm/](vale/styles/ROCm/) | ROCm-specific Vale rules (committed) |
 | [vale/styles/Google/](vale/styles/Google/), [vale/styles/Microsoft/](vale/styles/Microsoft/) | Google/Microsoft Vale packages (fetched via `vale sync`, not committed) |
-| [wordlists/](wordlists/) | Term lists: AMD trademarks, third-party trademarks, banned/restricted terms, and preferred terminology |
+| [wordlists/](wordlists/) | Term lists: AMD trademarks, third-party trademarks, banned/restricted terms, preferred terminology, and the shared heading proper-noun list |
+| [scripts/](scripts/) | `sync-heading-exceptions.py`, which regenerates the heading-case rules from the shared proper-noun list |
+| [vale/testdata/](vale/testdata/) | Regression fixtures for the rules; each file's header states the findings it must produce |
 | [rules/](rules/) | Human-readable documentation of the ROCm rule set, organized by topic |
 | [gh-workflows/consumer-example.yml](gh-workflows/consumer-example.yml) | Template CI workflow for consuming repos |
 
