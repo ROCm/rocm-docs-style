@@ -20,6 +20,8 @@ Set ROCM_PATH and MIGRAPHX_SET_GEMM_PROVIDER before launching.
 
 Packages live in the rocm/ directory of the repository.
 
+Install under /opt/rocm-<ver> using the rocm-<ver> scheme, where <ver> is x.y.z.
+
 Clone https://github.com/ROCm/rocm-examples and read https://example.com/rocm/docs for details.
 
 Genuine miscasing (one SPELL-003 finding per line):

@@ -12,8 +12,13 @@
 # it stands alone as a word in prose:
 #
 #   leading   (?<![\w/.-])      not preceded by a word character, "/", "." or "-"
-#   trailing  (?![\w/]|[-.]\w)  not followed by a word character, "/", or a
-#                               "-"/"." that continues into another word
+#   trailing  (?![\w/-]|\.[\w<])  not followed by a word character, "/" or "-", or by a
+#                               "." that continues into another word
+#
+# Any trailing "-" counts as part of a compound, even one with nothing after
+# it. That matters for a placeholder such as "rocm-<ver>": Vale's Markdown
+# parser strips "<ver>" as an inline HTML tag, so the rule sees "rocm-"
+# followed by whitespace.
 #
 # This keeps the rule off things that are literal identifiers rather than a
 # miscasing of the brand name:
@@ -41,19 +46,19 @@ level: error
 ignorecase: false
 nonword: true
 swap:
-  '(?<![\w/.-])(?:ROCM|rocm|Rocm)(?![\w/]|[-.]\w)': ROCm
-  '(?<![\w/.-])(?:HipBLAS|HIPBLAS|hipblas)(?![\w/]|[-.]\w)': hipBLAS
-  '(?<![\w/.-])(?:RocBLAS|ROCBLAS|rocblas)(?![\w/]|[-.]\w)': rocBLAS
-  '(?<![\w/.-])(?:miopen|MIOPEN|Miopen)(?![\w/]|[-.]\w)': MIOpen
-  '(?<![\w/.-])(?:RocFFT|ROCFFT|rocfft)(?![\w/]|[-.]\w)': rocFFT
-  '(?<![\w/.-])(?:HipSPARSE|hipsparse)(?![\w/]|[-.]\w)': hipSPARSE
-  '(?<![\w/.-])(?:RocSOLVER|rocsolver)(?![\w/]|[-.]\w)': rocSOLVER
-  '(?<![\w/.-])(?:migraphx|MIGRAPHX)(?![\w/]|[-.]\w)': MIGraphX
-  '(?<![\w/.-])(?:rocprofiler|ROCPROFILER)(?![\w/]|[-.]\w)': ROCProfiler
-  '(?<![\w/.-])(?:RocPRIM|rocprim)(?![\w/]|[-.]\w)': rocPRIM
-  '(?<![\w/.-])(?:RocRAND|rocrand)(?![\w/]|[-.]\w)': rocRAND
-  '(?<![\w/.-])(?:RocThrust|rocthrust)(?![\w/]|[-.]\w)': rocThrust
-  '(?<![\w/.-])(?:rocalution|ROCALUTION)(?![\w/]|[-.]\w)': rocALUTION
-  '(?<![\w/.-])(?:VLLM|Vllm)(?![\w/]|[-.]\w)': vLLM
-  '(?<![\w/.-])ASAN(?![\w/]|[-.]\w)': ASan
-  '(?<![\w/.-])(?:ROCPD|ROCpd)(?![\w/]|[-.]\w)': rocpd
+  '(?<![\w/.-])(?:ROCM|rocm|Rocm)(?![\w/-]|\.[\w<])': ROCm
+  '(?<![\w/.-])(?:HipBLAS|HIPBLAS|hipblas)(?![\w/-]|\.[\w<])': hipBLAS
+  '(?<![\w/.-])(?:RocBLAS|ROCBLAS|rocblas)(?![\w/-]|\.[\w<])': rocBLAS
+  '(?<![\w/.-])(?:miopen|MIOPEN|Miopen)(?![\w/-]|\.[\w<])': MIOpen
+  '(?<![\w/.-])(?:RocFFT|ROCFFT|rocfft)(?![\w/-]|\.[\w<])': rocFFT
+  '(?<![\w/.-])(?:HipSPARSE|hipsparse)(?![\w/-]|\.[\w<])': hipSPARSE
+  '(?<![\w/.-])(?:RocSOLVER|rocsolver)(?![\w/-]|\.[\w<])': rocSOLVER
+  '(?<![\w/.-])(?:migraphx|MIGRAPHX)(?![\w/-]|\.[\w<])': MIGraphX
+  '(?<![\w/.-])(?:rocprofiler|ROCPROFILER)(?![\w/-]|\.[\w<])': ROCProfiler
+  '(?<![\w/.-])(?:RocPRIM|rocprim)(?![\w/-]|\.[\w<])': rocPRIM
+  '(?<![\w/.-])(?:RocRAND|rocrand)(?![\w/-]|\.[\w<])': rocRAND
+  '(?<![\w/.-])(?:RocThrust|rocthrust)(?![\w/-]|\.[\w<])': rocThrust
+  '(?<![\w/.-])(?:rocalution|ROCALUTION)(?![\w/-]|\.[\w<])': rocALUTION
+  '(?<![\w/.-])(?:VLLM|Vllm)(?![\w/-]|\.[\w<])': vLLM
+  '(?<![\w/.-])ASAN(?![\w/-]|\.[\w<])': ASan
+  '(?<![\w/.-])(?:ROCPD|ROCpd)(?![\w/-]|\.[\w<])': rocpd
