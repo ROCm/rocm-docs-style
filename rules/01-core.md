@@ -457,7 +457,7 @@ note: Third-party image attribution -- needs provenance judgment.
 ## Units
 
 ### Rule: CORE-020
-**Severity:** error
+**Severity:** warning
 **Scope:** All documentation — units of measure
 **Rule:** Following Google style, put a nonbreaking space between a number and its unit of measure (bytes, metric-prefixed bytes, time units). Don't flag a bare digit-plus-"B" run when it's part of an LLM model name's parameter-count suffix rather than a byte count — specifically when the digits are hyphen-joined to the model name, or preceded by another bare number (a version number) and a space.
 **Wrong:**
@@ -473,7 +473,8 @@ The file is 20 GB.
 ```md
 GPT-OSS-20B and Llama 3 405B are both supported.
 ```
-**Note:** Model names written as "Name NNNB" with no hyphen and no version number in between (e.g., "Llama 70B") are still flagged; narrowing the exclusion further risks swallowing genuine byte-count typos.
+**Note:** Model names written as "Name NNNB" with no hyphen and no version number in between (e.g., "Llama 70B") are still flagged; narrowing the exclusion further risks swallowing genuine byte-count typos. File and tutorial names with an underscore after the unit (`2d_regression`), decimal parameter counts (`2.7B`) and ordinals (`1st`) are not flagged. "0s" and "1s" meaning zeros and ones are indistinguishable from seconds and are still flagged.
+**Note:** This is a house-style preference that writers cannot see in Markdown (the nonbreaking space is invisible), so it is a warning rather than an error and does not fail a build.
 **Source:** ROCm custom (supersedes Google.Units)
 
 ---
@@ -508,9 +509,10 @@ Install ROCm 7.x.y using your package manager.
 ---
 
 ### Rule: CORE-022
-**Severity:** warning
+**Status:** Suspended. The check is disabled in `vale/.vale.ini` and is not enforced; see `09-suspended-and-delegated.md`. The guidance below is kept as a recommendation only.
+**Severity:** warning (when enabled)
 **Scope:** All documentation — version number formatting
-**Rule:** Do not use a `v` prefix before a version string in documentation as it's redundant.
+**Rule:** Prefer no `v` prefix before a version string in documentation, as it's redundant. This is not enforced mechanically: standard names such as "Inception v3" and "PKCS#1 v1.5" and some AMD releases use the prefix, so no single rule fits all of them.
 **Wrong:**
 ```md
 Install ROCm v7.14.0 using your package manager.
@@ -555,18 +557,18 @@ CUDA 12.0 is required.
 ### Rule: CORE-024
 **Severity:** warning
 **Scope:** All documentation — word choice
-**Rule:** Use the preferred word or phrase from the substitution list instead of the discouraged one. The list is derived from the Google developer documentation word list, trimmed to entries that suit ROCm documentation. Examples: "open source" (not "open-source"), "to" (not "in order to"), "preceding" (not "above"), "capability" or "feature" (not "functionality"), "checkbox" (not "check box"), "URL" (not "url").
+**Rule:** Use the preferred word or phrase from the substitution list instead of the discouraged one. The list is derived from the Google developer documentation word list, trimmed to entries that suit ROCm documentation. Examples: "to" (not "in order to"), "checkbox" (not "check box"), "URL" (not "url"), "email" (not "e-mail"), "administrator" (not "admin").
 **Wrong:**
 ```md
-This plugin is open-source and supported.
 Cache the result in order to speed up later runs.
+Select the check box.
 ```
 **Right:**
 ```md
-This plugin is open source and supported.
 Cache the result to speed up later runs.
+Select the checkbox.
 ```
-**Note:** Entries that only exist to serve Google's own products and platforms (Google Cloud Platform terminology, Android and mobile UI terms, Google account names) are not part of this rule, and neither is the `CLI` to "command-line tool" swap, because it is wrong for the ROCm CLI product name. The complete list is in `vale/styles/ROCm/CORE-024.yml`; it replaces the `Google.WordList` and `Google.WordListCase` checks.
+**Note:** Entries that only exist to serve Google's own products and platforms (Google Cloud Platform terminology, Android and mobile UI terms, Google account names) are not part of this rule, and neither is the `CLI` to "command-line tool" swap, because it is wrong for the ROCm CLI product name. Five more swaps were removed after review: "above" to "preceding" (this guide writes "listed above" in a Right example, in `03-structure-landing.md`), "open-source" to "open source" (`SPELL-006` defers the hyphenation to human judgment), "functionality" to "capability" or "feature" and "abort" to "stop" (ordinary technical terms whose replacement can change the meaning), and "SHA1" to "SHA-1" (a commit's SHA1 is an identifier). The complete list is in `vale/styles/ROCm/CORE-024.yml`; it replaces the `Google.WordList` and `Google.WordListCase` checks.
 **Source:** ROCm custom, Google word list
 
 ---
