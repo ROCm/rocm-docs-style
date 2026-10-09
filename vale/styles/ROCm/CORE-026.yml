@@ -11,9 +11,11 @@
 # emphasis but no information. It is deliberately small.
 #
 # Not included on purpose:
-#   - "easily", "simply", "obviously": owned by ROCm.SPELL-009 (policy in
-#     rules/02-spelling-terminology.md). Listing them here too produced a
+#   - "obviously": owned by ROCm.SPELL-009 (policy in
+#     rules/02-spelling-terminology.md). Listing it here too would produce a
 #     second alert on the same span; keep this list disjoint from SPELL-009.
+#   - "easily", "simply": deliberately not flagged by anything now. They used
+#     to be flagged by SPELL-009, and before that also by Microsoft.Adverbs.
 #   - "seriously": meaning-bearing in phrases like "treat warnings seriously".
 #
 # MAINTENANCE: this is a manual subset of Microsoft.Adverbs

@@ -12,10 +12,14 @@
 # substitution ("in order to" -> "to") and reports it with the replacement, so
 # listing it here too produced a second alert on the identical span.
 #
-# Note: the `e.g.` and `i.e.` tokens below do not currently match anything.
-# With `nonword: false` Vale wraps each token in `\b`, and a word boundary
-# can't follow a trailing ".". Microsoft.Foreign is what actually flags those
-# two, so they are left in place as documentation of the policy.
+# Deliberately NOT listed, after review of real documentation:
+#   - "simple", "simply", "easy", "easily", "please": ordinary technical
+#     English ("a simple workaround", "please see"); writers use them
+#     deliberately and the reviewers found the flags noise, not signal.
+#   - "e.g." and "i.e.": allowed in this docs set. They were also dead tokens
+#     here: Vale wraps each token in a word-boundary anchor, and a word
+#     boundary can't follow a trailing ".". Microsoft.Foreign, which did flag
+#     them, is disabled in .vale.ini.
 extends: existence
 message: "'%s' is discouraged — see the Google word list for a clearer alternative."
 level: warning
@@ -26,15 +30,8 @@ tokens:
   - comprises
   - comprised
   - desire
-  - 'e\.g\.'
-  - 'i\.e\.'
   - leverage
   - leverages
   - leveraging
-  - please
-  - simply
-  - simple
-  - easily
-  - easy
   - obviously
   - utilize

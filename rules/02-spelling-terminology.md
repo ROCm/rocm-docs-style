@@ -230,17 +230,14 @@ You can use the `--verbose` flag for more output.
 |---|---|---|
 | comprise | consist of, contain, include | Frequently misused; doesn't translate well |
 | desire | want, need | Overly formal |
-| e.g. | for example, such as | Doesn't translate; some readers don't know what it means |
-| i.e. | that is, in other words | Same as above |
 | leverage (verb) | use, take advantage of | Jargon; imprecise |
 | modify | change, update, edit | "Modify" can be ambiguous in some contexts |
-| please | (omit) | Unnecessary in technical writing |
-| simple, simply | (omit or rephrase) | Subjective; what's simple for one reader isn't for another |
-| easy, easily | (omit or rephrase) | Same as above |
 | obviously | (omit) | Condescending; if it were obvious, you wouldn't need to say it |
 | just | (omit or rephrase) | Minimizing; often filler |
 | in order to | to | Unnecessarily wordy |
 | utilize | use | Unnecessarily complex |
 | via | through, using, by | Doesn't translate well |
+
+**Note:** "e.g." and "i.e." are allowed. "simple", "simply", "easy", "easily" and "please" are no longer flagged either; they are ordinary technical English, so use them where they are accurate and avoid them where they would belittle a hard step. See `09-suspended-and-delegated.md`.
 
 **Source:** ROCm custom, Google word list
