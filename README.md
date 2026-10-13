@@ -186,6 +186,9 @@ the repository root. Key points:
   `.rst` files. The two formats share one rule set, except that Markdown
   headings are checked by `ROCm.CORE-008-MD` and reStructuredText headings by
   `ROCm.CORE-008`.
+- `TokenIgnores` — Sphinx, MyST and Jinja template substitutions such as
+  `{{ ROCM_VERSION }}` and `{% if flag %}` are markup, not prose, so no check
+  reads them. The rest of the sentence is still linted.
 
 Where a Google check and a Microsoft check cover the same topic, the less
 extensive one is disabled — ties and cases where Google is broader default to
