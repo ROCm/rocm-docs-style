@@ -25,6 +25,11 @@ should be handed.
 | `Microsoft.UIVerbs` | "click", and similar input-specific verbs | "Click" is correct for a literal mouse action and wrong for a generic one. |
 | Sentence case for headings that begin with a lowercase letter (reStructuredText) | A heading such as `dynamic_dimension` | These are API identifiers and are exempt from the mechanical check, so a heading that merely forgets to capitalize its first word is not caught. |
 | Proper nouns in headings that are not on the shared list | A product name written in Title Case | The mechanical check only knows the names in `wordlists/heading-proper-nouns.txt`. |
+| `ROCm.CORE-027` | Repeated em dashes | A single em dash can be necessary. Prefer a comma, parentheses, a colon, or a new sentence, and allow a dash only extremely sparingly. |
+| `ROCm.CORE-028` | A table cell broken so the meaning is lost | A line break is often markup. Keep `>= 7.14` on one line when the break hides the comparison. |
+| `ROCm.CORE-030` | A cited ROCm release written as `7.x` or `7.0` | A short version is sometimes a placeholder (`7.x.y`, owned by CORE-021) and sometimes a real release that should be `7.0.0`. |
+| `ROCm.CORE-031` | A link that was not tested before publish | The target has to be fetched. Meaningful anchors stay with CORE-012. |
+| `ROCm.ENV-009`, `ROCm.ENV-010` | List delimiters, quoting, and undefined snake_case placeholders | The table has to be read. Do not flag a real example path. |
 
 ## Suspended, not covered by anything
 

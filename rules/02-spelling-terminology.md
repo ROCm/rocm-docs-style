@@ -180,6 +180,7 @@ tools from ROCProfiler (the profiling library) and are acceptable as-is — do n
 | open-source (adjective) | open source (adj.) |
 | machine learning | Machine Learning, Machine learning |
 | ML | ml |
+| the HIP SDK | HIP SDK |
 
 **Source:** ROCm custom, inclusive language guidelines
 

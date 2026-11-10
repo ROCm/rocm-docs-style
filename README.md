@@ -215,7 +215,7 @@ demonstrably broader, Google is disabled instead:
 | `Microsoft.HeadingAcronyms` | `ROCm.CORE-008` | Conflicts with `ROCm.CORE-008`'s heading-exceptions policy, which explicitly permits dozens of acronyms (ROCm, HIP, GPU, SDK, AMD, ...) in headings. |
 | `Microsoft.HeadingColons` | `ROCm.CORE-008` | Wants to capitalize the word after a colon in headings; `ROCm.CORE-008` enforces sentence case (lowercase after a colon unless a proper noun), which directly contradicts it. |
 | `Google.Contractions` | `Microsoft.Contractions` | Microsoft covers the same substitution list, plus a reverse contracted→expanded swap before end punctuation, avoiding an awkward contraction at a sentence boundary. |
-| `Google.EmDash` | `Microsoft.Dashes` | Microsoft matches the same two-sided-space defect, plus one-sided spacing around the dash, which Google's regex misses. |
+| `Google.EmDash` | `Microsoft.Dashes` | Microsoft matches the same two-sided-space defect, plus one-sided spacing around the dash, which Google's regex misses. Whether an em dash is appropriate is `ROCm.CORE-027`, and that judgment is left to review. |
 | `Google.FirstPerson` | `Microsoft.FirstPerson` | Microsoft matches the same tokens, plus the contracted forms I'd/I'll/I've. |
 | `Google.Latin` | *(none — `Microsoft.Foreign` is also disabled)* | Microsoft covered the same e.g./i.e. substitutions plus viz./ergo, but "e.g." and "i.e." are allowed in this docs set, so neither check runs. |
 | `Google.HeadingPunctuation` | `Microsoft.HeadingPunctuation` | Microsoft flags the same trailing-period case, plus trailing `?`/`!` in headings. |

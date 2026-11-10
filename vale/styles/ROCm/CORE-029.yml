@@ -1,0 +1,11 @@
+# CORE-029 — RST captioned images use a figure directive (warning)
+# The style guide says a captioned image uses .. figure::, not .. caption::,
+# so the figure can be numbered and cross-referenced. Captions stay optional;
+# this fires only when a caption directive is present.
+extends: existence
+message: "CORE-029: Use a figure directive instead of a caption directive so the image can be numbered and cross-referenced."
+level: warning
+scope: raw
+nonword: true
+tokens:
+  - '(?i)\.\. +caption::'
