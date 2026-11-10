@@ -292,7 +292,7 @@ For more information, see :doc:`Installing ROCm <install>`.
 ### Rule: CORE-013
 **Severity:** warning
 **Scope:** All documentation — acronym definitions
-**Rule:** Spell out and define acronyms on first use, except for well-known acronyms (e.g., API, GPU, CPU, RAM, OS, URL, HTML, SDK, AI, RCCL, SQTT, CI, ROCR, HSA, SIMD, ISA, SMI, MPICH, CLI, APU, VRAM, PID, GEMM, LLM, OEM, GPT) and the following terms, which are treated as proper names and do not require expansion: ROCm, HIP, CDNA, RDNA, GCN, JAX, AMDGPU, EPYC, SUSE. MAX and PRO are also exempt, but only when they appear as Ryzen AI product-name components (e.g., "Ryzen AI MAX+ PRO 395") — not as standalone words. Format: "Full Name (ACRONYM)".
+**Rule:** Spell out and define acronyms on first use, except for well-known acronyms (e.g., API, GPU, CPU, RAM, OS, URL, HTML, SDK, AI, RCCL, SQTT, CI, ROCR, HSA, SIMD, ISA, SMI, MPICH, CLI, APU, VRAM, PID, GEMM, LLM, OEM, GPT) and the following terms, which are treated as proper names and do not require expansion: ROCm, HIP, CDNA, RDNA, GCN, JAX, AMDGPU, EPYC, SUSE. MAX and PRO are also exempt, but only when they appear as Ryzen AI product-name components (e.g., "Ryzen AI MAX+ PRO 395") — not as standalone words. Format: "Full Name (ACRONYM)". If the first use is in a heading, use the full term in the heading only. Spell out the term and add the acronym in parentheses at the first body mention.
 **Wrong:**
 ```md
 Use the VA-API to decode video streams.
@@ -535,7 +535,7 @@ CUDA 12.0 is required.
 ### Rule: CORE-023
 **Severity:** warning
 **Scope:** All documentation — description-list entry formatting
-**Rule:** When a description list is presented as a run of "**Term:** Description" entries (for example, in a bulleted list), each entry's formatting must follow one convention: the term is bold, the colon falls inside the bold markers immediately after the term (`**Term:**`, not `**Term**:` or `**Term** :`), with no space between the term and the colon, and exactly one space between the closing `**` and the description.
+**Rule:** When a description list is presented as a run of "**Term:** Description" entries (for example, in a bulleted list), each entry's formatting must follow one convention: the term is bold, the colon falls inside the bold markers immediately after the term (`**Term:**`, not `**Term**:` or `**Term** :`), with no space between the term and the colon, and exactly one space between the closing `**` and the description. Do not bold a term that is already a hyperlink. Capitalize the first word of each description. Write each description as a sentence ending in a period, except for very short entries (for example, `Architecture: x86_64`), which omit the period when that choice is consistent across the whole list.
 **Wrong:**
 ```md
 - **Optimization**: Enables aggressive compiler optimizations.
@@ -549,7 +549,7 @@ CUDA 12.0 is required.
 - **Verbose:** Prints extra diagnostic output.
 ```
 (The same convention applies in rST: rST inline strong emphasis also uses `**text**`, so the wrong/right forms above are unchanged.)
-**Note:** CORE-019 (a general colon-capitalization rule) has been removed — it enforced guidance the current ROCm style guide no longer states, and directly contradicted the guide's "Description lists" section, which requires capitalizing the first word of each description. Implemented in Vale as `vale/styles/ROCm/CORE-023.yml`, an `existence` rule matching the malformed bold-term/colon patterns.
+**Note:** CORE-019 (a general colon-capitalization rule) has been removed — it enforced guidance the current ROCm style guide no longer states, and directly contradicted the guide's "Description lists" section, which requires capitalizing the first word of each description. Implemented in Vale as `vale/styles/ROCm/CORE-023.yml`, an `existence` rule matching the malformed bold-term/colon patterns. Vale does not check the hyperlink exception, the capital, or the short-entry period exception.
 **Source:** ROCm custom
 
 ---
@@ -604,3 +604,96 @@ The result is fast.
 ```
 **Note:** This deliberately covers only pure intensifiers. Manner and frequency adverbs that carry technical meaning, such as "silently" (a failure that reports no error), "randomly" (stochastic behavior) or "gracefully" (degradation behavior), are not flagged. "easily", "simply" and "obviously" are covered by the ambiguous-words rule instead. Implemented in `vale/styles/ROCm/CORE-026.yml`; it replaces the broader `Microsoft.Adverbs` check.
 **Source:** ROCm custom, Microsoft Writing Style Guide
+
+---
+
+### Rule: CORE-027
+**Severity:** warning
+**Scope:** All documentation — em dashes
+**Rule:** Do not use em dashes consistently. Prefer a comma, parentheses, a colon, or a separate sentence. Use an em dash extremely sparingly, and only when it is necessary or clearly clearer than those alternatives.
+**Wrong:**
+```md
+Install the driver — then reboot — then run the tests — and check the log.
+```
+**Right:**
+```md
+Install the driver, reboot, run the tests, and check the log.
+```
+**Also right (one dash, where it is clearer):**
+```md
+The installer copies the libraries — compiler, runtime, and math — into the ROCm directory.
+```
+**Note:** Not implemented in Vale. One em dash is not a violation. Review the page for repeated use. En dashes in ranges and hyphens are out of scope. `Microsoft.Dashes` still checks spacing around dashes. `Google.EmDash` stays off because it is the narrower twin.
+**Source:** ROCm documentation style guide
+
+---
+
+### Rule: CORE-028
+**Severity:** warning
+**Scope:** All documentation — table cells
+**Rule:** Do not break a table cell across lines in a way that hides the meaning. Keep a comparison such as `>= 7.14` on one line.
+**Wrong:**
+```md
+| Requirement |
+|-------------|
+| >= |
+| 7.14 |
+```
+**Right:**
+```md
+| Requirement |
+|-------------|
+| >= 7.14 |
+```
+**Note:** Not implemented in Vale. A line break is often markup, and only the reader can tell when it obscures the cell. Leave it to review.
+**Source:** ROCm documentation style guide
+
+---
+
+### Rule: CORE-029
+**Severity:** warning
+**Scope:** reStructuredText — captioned images
+**Rule:** When an image has a caption, use a figure directive, not a caption directive, so the figure is numbered and can be cross-referenced. Captions stay optional. Add one when the surrounding text does not make the image's purpose clear.
+**Wrong:**
+```rst
+.. image:: ./stack.png
+   :alt: ROCm software stack
+
+.. caption:: ROCm software stack
+```
+**Right:**
+```rst
+.. figure:: ./stack.png
+   :alt: ROCm software stack
+
+   ROCm software stack.
+```
+**Note:** Implemented in `vale/styles/ROCm/CORE-029.yml`, which flags a caption directive. A missing caption is not a violation.
+**Source:** ROCm documentation style guide
+
+---
+
+### Rule: CORE-030
+**Severity:** warning
+**Scope:** All documentation — cited ROCm releases
+**Rule:** When you cite a specific ROCm release, write the version as `x.y.z` (for example, `7.0.0`). Do not shorten a real release to `7.x` or `7.0`.
+**Wrong:**
+```md
+This page describes ROCm 7.0.
+ROCm 7.x added the feature.
+```
+**Right:**
+```md
+This page describes ROCm 7.0.0.
+```
+**Note:** Generic placeholders stay lowercase (`7.x.y`) and belong to CORE-021. Do not flag those. Do not re-enable the suspended `v`-prefix check (CORE-022): names such as "Inception v3" use that prefix. Not implemented in Vale, because a short version is sometimes a placeholder and sometimes a real release.
+**Source:** ROCm documentation style guide
+
+---
+
+### Rule: CORE-031
+**Severity:** warning
+**Scope:** All documentation — links before publish
+**Rule:** Test every link before you publish. Report a link that fails, or that points at a page which is not published yet.
+**Note:** This is a publish checklist, not a Vale substitution. Meaningful anchor text stays with CORE-012.
+**Source:** ROCm documentation style guide

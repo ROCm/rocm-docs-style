@@ -200,3 +200,53 @@ note: Path/complex value detection is Script; adequacy of example is LLM.
 ```
 
 **Source:** ROCm custom
+
+---
+
+## Rule: ENV-009
+**Severity:** warning
+**Scope:** Environment variable pages — list values
+**Rule:** When a variable takes a list of arguments, state the delimiter and whether the list must be quoted.
+**Wrong:**
+```md
+`ROCR_VISIBLE_DEVICES`: A list of devices.
+```
+**Right:**
+```md
+`ROCR_VISIBLE_DEVICES`: A comma-separated list of device indexes. Do not quote the list. Example: `ROCR_VISIBLE_DEVICES=0,1`
+```
+
+```routing
+tier: llm
+applies_when: [env_var_shape]
+strategy: structural
+section_scope: true
+note: Detect a list-valued variable from the description; the delimiter and quoting are judgment.
+```
+
+**Source:** ROCm documentation style guide
+
+---
+
+## Rule: ENV-010
+**Severity:** warning
+**Scope:** Environment variable pages — placeholders
+**Rule:** In a usage example, use a snake_case placeholder and define it.
+**Wrong:**
+```md
+Example: `ROCM_PATH=/opt/rocm`
+```
+**Right:**
+```md
+Example: `ROCM_PATH=path_to_local_ROCm_installation_directory`, where `path_to_local_ROCm_installation_directory` is the absolute path to the ROCm installation directory.
+```
+
+```routing
+tier: llm
+applies_when: [env_var_shape]
+strategy: structural
+section_scope: true
+note: A concrete path can be correct. Flag an undefined placeholder, not a real example path.
+```
+
+**Source:** ROCm documentation style guide
