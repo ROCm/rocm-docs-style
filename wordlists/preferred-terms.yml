@@ -145,6 +145,8 @@ technical:
     avoid: [Machine Learning, Machine learning]
   - preferred: ML
     avoid: [ml]
+  - preferred: the HIP SDK
+    avoid: [HIP SDK]
 
 # --- Compound words (preferred form) ---
 
